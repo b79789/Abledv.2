@@ -96,7 +96,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         popoverContent.preferredContentSize = CGSizeMake(200,200)
         popover!.delegate = self
         popover!.sourceView = self.view
-        popover!.sourceRect = CGRectMake(self.view.frame.width/2, self.view.frame.height/2,0,0)
+        popover!.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
         
         self.presentViewController(nav, animated: true, completion: nil)
         

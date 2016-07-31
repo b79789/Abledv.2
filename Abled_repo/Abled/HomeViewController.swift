@@ -79,7 +79,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         popover!.sourceView = self.view
         popover!.sourceRect = CGRectMake(self.view.frame.width/2, self.view.frame.height/2,0,0)
         
-        self.presentViewController(nav, animated: true, completion: nil)
+        self.navigationController!.presentViewController(nav, animated: true, completion: nil)
         
     }
     
