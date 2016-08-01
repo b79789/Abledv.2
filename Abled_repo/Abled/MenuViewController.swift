@@ -29,6 +29,7 @@ class MenuViewController: UIViewController {
     
     @IBAction func followAction(sender: AnyObject) {
         let alert = UIAlertController(title: "Success", message: "You have added this userto your followed users", preferredStyle: UIAlertControllerStyle.Alert);
+        
         showViewController(alert, sender: self);
         self.presentedViewController?.dismissViewControllerAnimated(true, completion: nil);
         
@@ -41,8 +42,8 @@ class MenuViewController: UIViewController {
     }
     
     @IBAction func cancelFunc(sender: AnyObject){
-        print("Hit Cancel")
-        self.navigationController?.popViewControllerAnimated(true)
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
 }

@@ -74,7 +74,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         let nav = UINavigationController(rootViewController: popoverContent)
         nav.modalPresentationStyle = UIModalPresentationStyle.Popover
         let popover = nav.popoverPresentationController
-        popoverContent.preferredContentSize = CGSizeMake(400,200)
+        popoverContent.preferredContentSize = CGSizeMake(self.view.frame.width/2, self.view.frame.height/2)
         popover!.delegate = self
         popover!.sourceView = self.view
         popover!.sourceRect = CGRectMake(self.view.frame.width/2, self.view.frame.height/2,0,0)

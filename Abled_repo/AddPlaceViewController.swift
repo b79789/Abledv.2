@@ -11,7 +11,7 @@ import Firebase
 import FirebaseDatabase
 
 
-class AddPlaceViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate  {
+class AvarlaceViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate  {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var addPicButton: UIButton!
@@ -27,7 +27,7 @@ class AddPlaceViewController: UIViewController, UINavigationControllerDelegate, 
     
     @IBAction func fakeSave(sender: AnyObject) {
         
-       self.navigationController?.popViewControllerAnimated(true)
+       self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     
@@ -67,49 +67,7 @@ class AddPlaceViewController: UIViewController, UINavigationControllerDelegate, 
         }
         //if let currentUser = FIRAuth.auth()?.currentUser {
             
-//        if let currentUser = PFUser.currentUser() {
-//            
-//            currentUser.fetchIfNeededInBackgroundWithBlock({ (foundUser: PFObject?, error: NSError?) -> Void in
-//                
-//                // Get and update user added data
-//                
-//                if foundUser != nil {
-//                    if self.placeName.text != nil || self.placeAddress != nil{
-//                    let name = self.placeName.text
-//                    let address = self.placeAddress.text
-//                    let type = self.placeType.text
-//                    let userPlaces = PFObject(className:"userPlaces")
-//                        userPlaces["placeName"] = name
-//                        userPlaces["placeAddress"] = address
-//                        userPlaces["userName"] = currentUser.username
-//                        userPlaces["placeType"] = type
-//                        userPlaces.saveInBackground()
-//                        
-//                        
-//                    foundUser!["placeName"] = name
-//                    foundUser!["placeAddress"] = address
-//                    
-//                    foundUser?.saveInBackgroundWithBlock({ (succeeded: Bool, error: NSError?) -> Void in
-//                        
-//                        if succeeded {
-//                            
-//                            print("place details added to user")
-//                            print(name)
-//                            print(address)
-//                        }
-//                    })
-//                    
-//                }
-//                
-//                }
-//            })
-//                
-//            
-//     }
-//    
-//        
-//               let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PlacesReviewed");
-//               self.navigationController!.pushViewController(viewController, animated: true)
+
     }
     
     func myFunc() {
@@ -156,29 +114,19 @@ class AddPlaceViewController: UIViewController, UINavigationControllerDelegate, 
     
   override func viewWillAppear(animated: Bool) {
     
+    myFunc()
+    myFunc2()
+    myFunc3()
+         }
     
-//        if let user = FIRAuth.auth()?.currentUser {
-//            let name = user.displayName
-//            let email = user.email
-//            //let photoUrl = user.photoURL
-//            let uid = user.uid
-//            print(email , uid)
-//            if (name != nil) {
-//                self.userNameLabel.text = "User: " + name!
-//            }else{
-//                self.userNameLabel.text = "User: Updating..."
-//            }
-//            
-//        } else {
-//            
-//            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Login")
-//                self.presentViewController(viewController, animated: true, completion: nil)
-//            })
-//            print("No user signed in")
-//        }
-//
-  }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "segueTest") {
+            //Checking identifier is crucial as there might be multiple
+            // segues attached to same view
+            let detailVC = segue.destinationViewController as! DetailView;
+            detailVC.toPass = "hello"
+        }
+    }
 
     @IBAction func savePicAction(sender: AnyObject) {
         let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)

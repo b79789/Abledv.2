@@ -12,7 +12,7 @@ import Parse
 
 class DetailView: UIViewController {
     
-    
+    var toPass = String()
     @IBOutlet weak var closeButton: UIButton!
     
     @IBAction func CloseAction(sender: AnyObject) {
@@ -24,10 +24,6 @@ class DetailView: UIViewController {
         super.viewDidLoad()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-    }
     
     
     

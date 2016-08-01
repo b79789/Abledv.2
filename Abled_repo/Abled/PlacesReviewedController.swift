@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 
-class PlacesReviewController: UIViewController
+class PlacesReviewController: UIViewController, UITableViewDelegate, UITableViewDataSource
  {
     @IBOutlet weak var proPic: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -95,5 +95,15 @@ class PlacesReviewController: UIViewController
         let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("EnterData");
             self.navigationController!.pushViewController(viewController, animated: true)
         
+    }
+    
+     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.Delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+        }
     }
 }
