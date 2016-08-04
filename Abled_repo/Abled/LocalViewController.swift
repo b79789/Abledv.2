@@ -11,61 +11,214 @@ import Foundation
 import UIKit
 import Firebase
 import MapKit
+import GooglePlaces
 
 class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapViewDelegate {
     
-    
+    var placeName = String()
+    var placeAddress = String()
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var proPic: UIImageView!
     @IBOutlet weak var mapView: MKMapView!
     var locationManager: CLLocationManager!
     @IBOutlet weak var myTableView: UITableView!
-    let placeArray = ["Porky's", "Jacks", "Jim's","Mary's", "Goodyear", "First turn","Bella's", "Dairy Center", "Recreation Dept.","Toby's"]
-    let addressArray = ["123 Testing Dr. Charlotte NC", "123 Testing Dr. Charlotte NC", "123 Testing Dr. Charlotte NC","123 Testing Dr. Charlotte NC", "123 Testing Dr. Charlotte NC", "123 Testing Dr. Charlotte NC","123 Testing Dr. Charlotte NC", "123 Testing Dr. Charlotte NC", "123 Testing Dr. Charlotte NC","123 Testing Dr. Charlotte NC"]
-    let pic1 =  "barCafe.jpg"
-    let pic2 = "bjs.png"
-    let pic3 = "jackinthebox_restaurant_thumb.png"
-    let pic4 = "humpty.png"
-    let pic5 = "fan_fang_thumb.png"
-    let pic6 = "aw.gif"
-    let pic7 =  "brand.gif"
-    let pic8 =  "Chi-Chi.gif"
-    let pic9 =  "jacks.jpg"
-    let pic10 = "tobys_bar_restaurant_87028.jpg"
-    
+    var locale: CLLocationCoordinate2D!
+    var myLocalPlaces = [Places]()
+    var idArray = [String]()
+    var myUrl: String!
+    var placesArray:[Places!] = []
+    var imgData:NSData!
+    var placeIcon: NSData!
+    var placeLat: Double!
+    var placeLon: Double!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if (CLLocationManager.locationServicesEnabled())
-        {
-            locationManager = CLLocationManager()
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestAlwaysAuthorization()
-            locationManager.startUpdatingLocation()
-        }
-       
+        locationPosition()
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "customcell1")
+        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways){
+            let currentLocation = self.locationManager.location
+            let longitude = currentLocation!.coordinate.longitude
+            let latitude = currentLocation!.coordinate.latitude
+            locale = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
+            fetchPlacesNearCoordinate(locale, radius: 2000, types: [""])
+            
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        if let user = FIRAuth.auth()?.currentUser {
+            let name = user.displayName
+            //let email = user.email
+            //let photoUrl = user.photoURL
+            //let uid = user.uid
+            if (name != nil) {
+                self.userNameLabel.text = "User: " + name!
+            }else{
+                self.userNameLabel.text = "User: Updating..."
+            }
+            
+            myTableView.reloadData()
+        } else {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Login")
+                self.presentViewController(viewController, animated: true, completion: nil)
+            })
+            print("No user signed in")
+        }
+    }
+    
+    func locationPosition(){
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+  
+    
+    func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double, types:[String]) {
+        var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=\("AIzaSyBPJj0Q7wW1ofFZ3icRSPwau6qda4yA7Pw")&location=\(coordinate.latitude),\(coordinate.longitude)&radius=\(radius)&rankBy=distance&sensor=true"
+        let typesString = types.count > 0 ? types.joinWithSeparator("|") : "food"
+        urlString += "&types=\(typesString)"
+        urlString = urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        let session = NSURLSession.sharedSession()
+        let placesTask = session.dataTaskWithURL(NSURL(string: urlString)!) {data, response, error in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            if let jsonResult = (try? NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                let returnedPlaces: NSArray? = jsonResult["results"] as? [[String:AnyObject]]
+                if returnedPlaces != nil {
+                    for result in returnedPlaces! {
+                        self.placeName = (result["name"] as! String?)!
+                            if let myId = result["place_id"] as? NSString {
+                                let iden = myId as String
+                                self.myUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + iden + "&key=AIzaSyBPJj0Q7wW1ofFZ3icRSPwau6qda4yA7Pw"
+                                if let url = NSURL(string: self.myUrl) {
+                                    self.getData(url)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        placesTask.resume()
+    }
+    
+    func getData (url: NSURL){
+        let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "GET"
+        let myTask = session.dataTaskWithRequest(request) { (data: NSData?, url: NSURLResponse?,error: NSError?) in
+            if error == nil {
+                    do {
+                        let jsonDict = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
+                        if let results = jsonDict!["result"]{
+                            //let place = Places()
+                            var myplaceName = ""
+                            var placeAddress = ""
+                            let placeType = ""
+                            var placeRating = 0.0
+                            
+                            if let address = results.objectForKey("formatted_address") {
+                            placeAddress = address as! String
+                            } else {
+                                let error = "Error"
+                                print(error)
+                            }
+                            if let name = results.objectForKey("name") {
+                                myplaceName = name as! String
+                            } else {
+                                myplaceName = "Error"
+                            }
+                            if let rating:Double = results.objectForKey("rating") as? Double {
+                                
+                                placeRating = rating
+                            } else {
+                                //let error = "No Rating Available"
+                                //print(error)
+                            }
+                            if let myPhoto = results.objectForKey("icon"){
+                                let url = NSURL(string: myPhoto as! String)
+                                let data = NSData(contentsOfURL: url!)
+                                self.placeIcon = data!
+                                self.loadMyImage(myPhoto as! String)
+                            }
+                            if let myGeo = results.objectForKey("geometry")?.objectForKey("location"){
+                                let lat = myGeo.objectForKey("lat")
+                                let lng = myGeo.objectForKey("lng")
+                                self.placeLat = ((lat)?.doubleValue)!
+                                self.placeLon = ((lng)?.doubleValue)!
+
+                            } else {
+                                
+                            }
+//                            if let type = results.objectForKey("types") {
+//                                
+//                                placeType = type as! String
+//                            } else {
+//                                
+//                            
+//                            }
+                            let place = Places(name: myplaceName, address: placeAddress, type: placeType, rating: placeRating, icon: self.placeIcon, lat: self.placeLat, lon: self.placeLon)
+                            self.placesArray.append(place)
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.myTableView.reloadData()
+                            })
+                        }
+                    }catch let error as NSError {
+                        
+                        print(error)
+                }
+               
+                
+            }
+        }
+        myTask.resume()
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return placesArray.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        //let thumbils:[String] = [ pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10]
+        let thePlaces = placesArray[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("LocalTableViewCell") as! LocalTableViewCell
+        cell.nameLabel.text = thePlaces.Name
+        cell.cellImage.image = UIImage(data:thePlaces.Icon,scale:1.0)
+        cell.addressLabel.text = thePlaces.Address
+        cell.addressLabel.adjustsFontSizeToFitWidth = true
+        
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+       // let row = indexPath.row
+        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("AddPlace");
+        self.navigationController!.pushViewController(viewController, animated: true)
         
     }
     
+  
     func mapView(mapView: MKMapView,
                  viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
         if annotation is MKUserLocation {
-            //return nil so map view draws "blue dot" for standard user location
             return nil
         }
-        
         let reuseId = "pin"
         var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
-            //pinView!.animatesDrop = true
-            pinView!.image = UIImage(named:"map_icon.png")!
-            
+            pinView?.pinTintColor = UIColor.orangeColor()
+            pinView!.animatesDrop = true
         }
         else {
             pinView!.annotation = annotation
@@ -77,97 +230,45 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
     {
         
         let location = locations.last! as CLLocation
+        locale = location.coordinate
         
+        
+        //print(locale)
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.04, longitudeDelta: 0.04))
-        
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025))
         self.mapView.setRegion(region, animated: true)
+        for place in placesArray{
+
+            let annotation2 = MapLocations(title: place.Name, subtitle: place.Address, coordinate: CLLocationCoordinate2D(latitude: place.Lat, longitude:  place.Lon))
+            mapView.addAnnotation(annotation2)
+        }
         let annotation = MKPointAnnotation()
         annotation.coordinate = center
         annotation.title = "Here"
         annotation.subtitle = "You Are"
         mapView.addAnnotation(annotation)
-        let newtonLocation = CLLocationCoordinate2DMake(35.639441, -81.238403)
-        // Drop a pin
-        let dropPin = MKPointAnnotation()
-        dropPin.coordinate = newtonLocation
-        dropPin.title = "Porky's"
-        let newtonLocation2 = CLLocationCoordinate2DMake(35.687139, -81.220207)
-        // Drop a pin
-        let dropPin2 = MKPointAnnotation()
-        dropPin2.coordinate = newtonLocation2
-        dropPin2.title = "Jacks"
-        let newtonLocation3 = CLLocationCoordinate2DMake(35.665943, -81.221581)
-        // Drop a pin
-        let dropPin3 = MKPointAnnotation()
-        dropPin3.coordinate = newtonLocation3
-        dropPin3.title = "Jim's"
-        mapView.addAnnotations([dropPin,dropPin2,dropPin3])
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return placeArray.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let thumbils:[String] = [ pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10]
-       
-        let cell = tableView.dequeueReusableCellWithIdentifier("LocalTableViewCell") as! LocalTableViewCell
-        // Load images
-        //let cell = tableView.dequeueReusableCellWithIdentifier("customcell1", forIndexPath: indexPath) as UITableViewCell
-        cell.nameLabel.text = placeArray[indexPath.item]
-        
-        cell.cellImage.image = UIImage(named: thumbils[indexPath.row])
-        cell.addressLabel.text = addressArray [indexPath.item]
-        cell.addressLabel.adjustsFontSizeToFitWidth = true
-       
-        
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
-        let row = indexPath.row
-        print("Row: \(row)")
-        
-        print(placeArray[row] )
-        
-        
-        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("AddPlace");
-        self.navigationController!.pushViewController(viewController, animated: true)
-        
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        if let user = FIRAuth.auth()?.currentUser {
-            let name = user.displayName
-            let email = user.email
-            //let photoUrl = user.photoURL
-            let uid = user.uid
-            print(email , uid)
-            if (name != nil) {
-                self.userNameLabel.text = "User: " + name!
-            }else{
-                self.userNameLabel.text = "User: Updating..."
+    func loadMyImage(urlString: String!) {
+        let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+        let imgUrl:NSURL = NSURL(string: urlString)!
+        let request = NSMutableURLRequest(URL: imgUrl)
+        request.HTTPMethod = "GET"
+        let task = session.dataTaskWithRequest(request) { (data:NSData?, response:NSURLResponse?, error:NSError?) -> Void in
+            if (error == nil) {
+                // Success
+                self.imgData = data
+                
+   
             }
-
-        } else {
+            else {
+                // Failure
+                print("Error: %@", error!.localizedDescription);
+            }
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Login")
-                self.presentViewController(viewController, animated: true, completion: nil)
-            })
-            print("No user signed in")
- 
+            
         }
+        task.resume()
     }
 }

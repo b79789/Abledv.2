@@ -55,7 +55,6 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
             }else{
                 self.userNameLabel.text = "User: Updating..."
             }
-            print(email,uid)
         } else {
 
             dispatch_async(dispatch_get_main_queue(), { () -> Void in

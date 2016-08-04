@@ -22,8 +22,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This information is required to show your current location</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This application needs access to your location information</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This application needs access to your location information</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

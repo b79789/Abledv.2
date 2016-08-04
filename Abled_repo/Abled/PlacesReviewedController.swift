@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+import FirebaseDatabase
 
 class PlacesReviewController: UIViewController, UITableViewDelegate, UITableViewDataSource
  {
@@ -27,28 +27,48 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
     let pic8 =  "Chi-Chi.gif"
     let pic9 =  "jacks.jpg"
     let pic10 = "tobys_bar_restaurant_87028.jpg"
+    var ref:FIRDatabaseReference!
+    var myArray: [AnyObject]!
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "customcell")
+        
+    }
+    
+    func fireBaseFunc() {
+    
+        FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
+            if let user = user {
+                print(user.displayName)
+                var refHandle = FIRDatabaseReference()
+//                let postRef = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+//                refHandle = postRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) in
+//                    let postDict = snapshot.value as! [String : AnyObject]
+//                    // ...
+//                })
+//    
+            }
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         if let user = FIRAuth.auth()?.currentUser {
             let name = user.displayName
-            let email = user.email
+            //let email = user.email
             //let photoUrl = user.photoURL
-            let uid = user.uid
+            //let uid = user.uid
             
-            print(email , uid)
+            
             if (name != nil) {
                 self.userNameLabel.text = "User: " + name!
             }else{
                 self.userNameLabel.text = "User: Updating..."
             }
-            
+            fireBaseFunc()
 
         } else {
             
@@ -91,9 +111,6 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
         print("Row: \(row)")
         
         print(placeArray[row] )
-       
-        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("EnterData");
-            self.navigationController!.pushViewController(viewController, animated: true)
         
     }
     
