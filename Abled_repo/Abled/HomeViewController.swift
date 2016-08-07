@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 import Firebase
+import FirebaseDatabase
+import FirebaseStorage
 
 class HomeViewController: UIViewController , UIPopoverPresentationControllerDelegate
 {
@@ -16,34 +18,60 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     @IBOutlet weak var proPic: UIImageView!
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var messageName: UILabel!
+    var ref:FIRDatabaseReference!
+    var reviewedArray: [AnyObject]!
     
-    
-    let pic1 =  "pic1.jpeg"
-    let pic2 = "pic2.jpeg"
-    let pic3 = "pic3.jpeg"
-    let pic4 = "pic4.jpeg"
-    let pic5 = "pic5.jpeg"
-    let pic6 = "pic6.jpegf"
-    let pic7 =  "pic7.jpeg"
-    let pic8 =  "pic8.jpeg"
-    let pic9 =  "pic9.jpeg"
-    let pic10 = "pic10.jpeg"
-    let testArray = ["Jonny","Wilma","Dusty","Brian78","Ronald","Vickie","Nicole", "Isaiah", "Tony", "Ashlie"]
-    let commentArray = ["Very easy access to streets and businesses. I would recommend this part of the city to any mobility impaired users as the transitions are easy and access is plenty. I truly enjoyed myself here.","Smooth","easy in easy out","Not very accessible","Hope more places are like this","Would recommend","Excellent place", "Smooth transitions", "Beautiful and easy", "Exits and entrances are good"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-               }
+        if let user = FIRAuth.auth()?.currentUser {
+            self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                // check if user has photo
+                if snapshot.hasChild("userPhoto"){
+                    // set image locatin
+                    let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+                    let storage = FIRStorage.storage()
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                    storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        
+                        let userPhoto = UIImage(data: data!)
+                        self.proPic.image = userPhoto
+                    })
+                }else{
+                    //let defImage = user.photoURL
+                    let storage = FIRStorage.storage()
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                    storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        
+                        let userPhoto = UIImage(data: data!)
+                        self.proPic.image = userPhoto
+                    })
+                    
+                }
+            })
+        }
+    }
     
 
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    func fireBaseFunc() {
+        self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/posts")
+        self.ref.queryOrderedByChild("starCount").observeEventType(.Value, withBlock: { snapshot in
+            if snapshot.exists(){
+                for child in snapshot.children{
+                    //print(child)
+                    let myName = child.value["name"] as! String
+                    self.reviewedArray.append(myName)
+                    self.myTableView.reloadData()
+                    
+                }
+            }
+        })
     }
     
     override func viewWillAppear(animated: Bool) {
-        
+        fireBaseFunc()
         if let user = FIRAuth.auth()?.currentUser {
             let name = user.displayName
             let email = user.email
@@ -97,17 +125,29 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return testArray.count
+        if self.reviewedArray == nil {
+            self.reviewedArray = [""]
+            return self.reviewedArray.count
+        }else{
+            return self.reviewedArray.count
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("HomeTableViewCell") as! HomeTableViewCell
-        let thumbils:[String] = [ pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10]
-        cell.myImageView?.image = UIImage(named: thumbils[indexPath.row])
+        //let thumbils:[String] = [ pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10]
+        if self.reviewedArray == nil {
+            self.reviewedArray = [""]
+            cell.postersName.text = self.reviewedArray[indexPath.item] as? String
+            cell.postersName.adjustsFontSizeToFitWidth = true
+        }else{
+            cell.postersName.text = self.reviewedArray[indexPath.item] as? String
+            cell.postersName.adjustsFontSizeToFitWidth = true
+        }
+        //cell.myImageView?.image = UIImage(named: thumbils[indexPath.row])
         //cell.myUserName?.text = testArray[indexPath.item]
-        cell.myTextView?.text = commentArray[indexPath.item]
-        cell.postersName?.text = testArray[indexPath.item]
+        //cell.myTextView?.text = commentArray[indexPath.item]
+        //cell.postersName?.text = testArray[indexPath.item]
         //cell.myUserName?.text = testArray[indexPath.item]
         //cell.textLabel?.text = testArray[indexPath.item]
         //cell.imageView?.image = UIImage(named: thumbils[indexPath.row])
@@ -122,7 +162,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         let row = indexPath.row
         print("Row: \(row)")
         
-        print(testArray[row] )
+        print(self.reviewedArray[row] )
         
         //let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("EnterData");
         //self.navigationController!.pushViewController(viewController, animated: true)

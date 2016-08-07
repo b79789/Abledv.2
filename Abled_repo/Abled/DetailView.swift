@@ -12,6 +12,15 @@ import Parse
 
 class DetailView: UIViewController {
     
+    @IBOutlet weak var proPic: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var placeName: UILabel!
+    @IBOutlet weak var placeAddress: UILabel!
+    @IBOutlet weak var placePhoto: UIImageView!
+    @IBOutlet weak var starCount: CosmosView!
+    
+    @IBOutlet weak var placeComments: UITextView!
+    
     var toPass = String()
     @IBOutlet weak var closeButton: UIButton!
     

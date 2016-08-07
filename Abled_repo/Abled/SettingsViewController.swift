@@ -8,7 +8,8 @@
 
 import UIKit
 import Firebase
-
+import FirebaseDatabase
+import FirebaseStorage
 
 class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverPresentationControllerDelegate
   {
@@ -20,11 +21,38 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBOutlet weak var contactDev: UIButton!
     @IBOutlet weak var themePick: UISegmentedControl!
     var picker = UIImagePickerController()
+    var ref:FIRDatabaseReference!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        if let user = FIRAuth.auth()?.currentUser {
+        self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+        self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            // check if user has photo
+            if snapshot.hasChild("userPhoto"){
+                // set image locatin
+                let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+                let storage = FIRStorage.storage()
+                let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                    
+                    let userPhoto = UIImage(data: data!)
+                    self.profilePic.image = userPhoto
+                })
+            }else{
+                //let defImage = user.photoURL
+                let storage = FIRStorage.storage()
+                let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                    
+                    let userPhoto = UIImage(data: data!)
+                    self.profilePic.image = userPhoto
+                })
+                
+            }
+        })
+        }
     }
     
     @IBAction func changePicAction(sender: AnyObject) {
@@ -50,6 +78,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         alert.addAction(cameraAction)
         alert.addAction(gallaryAction)
         alert.addAction(cancelAction)
+        alert.popoverPresentationController?.sourceView  = self.view
+        alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
         self.presentViewController(alert, animated: true, completion: nil)
         
         
@@ -76,8 +106,32 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         picker .dismissViewControllerAnimated(true, completion: nil)
         profilePic.image=info[UIImagePickerControllerOriginalImage] as? UIImage
         
-        //let pickedImage:UIImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        //let imageData = UIImageJPEGRepresentation(pickedImage, 0.5)
+        let pickedImage:UIImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let imageData = UIImagePNGRepresentation(pickedImage)
+        profilePic.image = pickedImage
+        dismissViewControllerAnimated(true, completion: nil)
+        var data = NSData()
+        data = UIImageJPEGRepresentation(profilePic.image!, 0.8)!
+        // set upload path
+        let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+        let metaData = FIRStorageMetadata()
+        metaData.contentType = "image/jpg"
+        let storage = FIRStorage.storage()
+        let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+        storageRef.child(filePath).putData(data, metadata: metaData){(metaData,error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }else{
+                //store downloadURL
+                let downloadURL = metaData!.downloadURL()!.absoluteString
+                //store downloadURL at database
+                self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+                self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).updateChildValues(["userPhoto": downloadURL])
+            }
+
+        }
+        
 //        let imageFile:PFFile = PFFile(data: imageData!)!
 //        PFUser.currentUser()!.setObject(imageFile, forKey:"profilePic")
 //        PFUser.currentUser()!.saveInBackground()
@@ -87,6 +141,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         print("picker cancel.")
         
     }
+    
     @IBAction func radiusAction(sender: AnyObject) {
         
         let popoverContent = (self.storyboard?.instantiateViewControllerWithIdentifier("radius"))! as UIViewController
@@ -97,7 +152,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         popover!.delegate = self
         popover!.sourceView = self.view
         popover!.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
-        
+
         self.presentViewController(nav, animated: true, completion: nil)
         
     }

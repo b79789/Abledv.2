@@ -8,10 +8,12 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 
 class MessagesViewController: UIViewController {
     @IBOutlet weak var userNameLabel: UILabel!
-    
+    @IBOutlet weak var proPic: UIImageView!
+    var ref:FIRDatabaseReference!
     let testArray = ["Jonny","Wilma","Dusty","Brian78","Ronald","Vickie","Nicole", "Isaiah", "Tony", "Ashlie"]
     let commentArray = ["Very easy access","Smooth","easy in easy out","Not very accessible","Hope more places are like this","Would recommend","Excellent place", "Smooth transitions", "Beautiful and easy", "Exits and entrances are good"]
     let pic1 = "man1.jpeg"
@@ -27,17 +29,49 @@ class MessagesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        if let user = FIRAuth.auth()?.currentUser {
+            self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                // check if user has photo
+                if snapshot.hasChild("userPhoto"){
+                    // set image locatin
+                    let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+                    let storage = FIRStorage.storage()
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                    storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        let name = user.displayName
+                        if (name != nil) {
+                            self.userNameLabel.text = "User: " + name!
+                        }else{
+                            self.userNameLabel.text = "User: Updating..."
+                        }
+                        let userPhoto = UIImage(data: data!)
+                        self.proPic.image = userPhoto
+                    })
+                }else{
+                    //let defImage = user.photoURL
+                    let storage = FIRStorage.storage()
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                    storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        
+                        let userPhoto = UIImage(data: data!)
+                        self.proPic.image = userPhoto
+                    })
+                    
+                }
+            })
+        }else{
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Login")
+                self.presentViewController(viewController, animated: true, completion: nil)
+            })
+        }
     }
 
 
     override func viewWillAppear(animated: Bool) {
         if let user = FIRAuth.auth()?.currentUser {
             let name = user.displayName
-            let email = user.email
-            //let photoUrl = user.photoURL
-            let uid = user.uid
-            print(email , uid)
             if (name != nil) {
                 self.userNameLabel.text = "User: " + name!
             }else{

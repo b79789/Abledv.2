@@ -12,6 +12,7 @@ import UIKit
 import Firebase
 import MapKit
 import GooglePlaces
+import FirebaseStorage
 
 class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapViewDelegate {
     
@@ -31,18 +32,47 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
     var placeIcon: NSData!
     var placeLat: Double!
     var placeLon: Double!
+    var ref:FIRDatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         locationPosition()
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "customcell1")
+        
         if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways){
             let currentLocation = self.locationManager.location
             let longitude = currentLocation!.coordinate.longitude
             let latitude = currentLocation!.coordinate.latitude
             locale = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
             fetchPlacesNearCoordinate(locale, radius: 2000, types: [""])
-            
+  
+        }
+        if let user = FIRAuth.auth()?.currentUser {
+            self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                // check if user has photo
+                if snapshot.hasChild("userPhoto"){
+                    // set image locatin
+                    let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+                    let storage = FIRStorage.storage()
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                    storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        
+                        let userPhoto = UIImage(data: data!)
+                        self.proPic.image = userPhoto
+                    })
+                }else{
+                    //let defImage = user.photoURL
+                    let storage = FIRStorage.storage()
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                    storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        
+                        let userPhoto = UIImage(data: data!)
+                        self.proPic.image = userPhoto
+                    })
+                    
+                }
+            })
         }
     }
     

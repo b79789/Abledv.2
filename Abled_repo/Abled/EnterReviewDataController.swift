@@ -8,7 +8,8 @@
 
 import UIKit
 import Parse
-
+import Firebase
+import FirebaseStorage
 
 class EnterReviewDataController: UIViewController {
     
@@ -16,9 +17,40 @@ class EnterReviewDataController: UIViewController {
     @IBOutlet weak var placeAddress: UITextField!
     @IBOutlet weak var placeType: UITextField!
     
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var proPic: UIImageView!
+    var ref:FIRDatabaseReference!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let user = FIRAuth.auth()?.currentUser {
+            self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                // check if user has photo
+                if snapshot.hasChild("userPhoto"){
+                    // set image locatin
+                    let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+                    let storage = FIRStorage.storage()
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                    storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        
+                        let userPhoto = UIImage(data: data!)
+                        self.proPic.image = userPhoto
+                    })
+                }else{
+                    //let defImage = user.photoURL
+                    let storage = FIRStorage.storage()
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                    storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        
+                        let userPhoto = UIImage(data: data!)
+                        self.proPic.image = userPhoto
+                    })
+                    
+                }
+            })
+        }
     }
     
     override func viewWillAppear(animated: Bool) {

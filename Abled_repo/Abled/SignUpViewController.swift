@@ -57,7 +57,7 @@ class SignUpViewController: UIViewController {
             
             FIRAuth.auth()?.createUserWithEmail(email!, password: password!) { (user, error) in
                 
-                if ((error) != nil) {
+                if (error != nil) {
                     let alert = UIAlertController(title: "Error", message: "\(error)", preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
                     self.showViewController(alert, sender: self);}))
@@ -68,7 +68,7 @@ class SignUpViewController: UIViewController {
                         
                         changeRequest.displayName = username
                         changeRequest.photoURL =
-                            NSURL(string: "https://example.com/jane-q-user/profile.jpg")
+                            NSURL(string: "gs://stacksapp-7b63c.appspot.com/defaultImage/")
                         changeRequest.commitChangesWithCompletion { error in
                             if error != nil {
                                 // An error happened.
