@@ -18,7 +18,7 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var myTableView: UITableView!
     var ref:FIRDatabaseReference!
     var myReviewedArray: [Posts]!
-    
+    var myImage: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +26,11 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "customcell")
         if let user = FIRAuth.auth()?.currentUser {
             fireBaseFunc()
+            getimage()
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
+                print(snapshot.description)
                 if snapshot.hasChild("userPhoto"){
                     // set image locatin
                     let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
@@ -53,8 +55,6 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
             })
         }
         
-        
-        
     }
     
     func fireBaseFunc() {
@@ -62,18 +62,18 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
         self.ref.queryOrderedByChild("starCount").observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists(){
                 for child in snapshot.children{
-                    for items in child.children{
-                        let myName = items.value["name"] as! String
+                    
+                        let myName = child.value["name"] as! String
    
-                        let myAdd = items.value["address"] as! String
-                        let type = items.value["type"] as! String
-                        let urlString = items.value["image_path"] as! String
-                        let rating = items.value["starCount"] as! Double
+                        let myAdd = child.value["address"] as! String
+                        let type = child.value["type"] as! String
+                        let urlString = child.value["image_path"] as! String
+                        let rating = child.value["starCount"] as! Double
                         let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString)
                         
                         self.myReviewedArray.append(myPost)
                         self.myTableView.reloadData()
-                    }
+                    
                 }
             }
         })
@@ -119,36 +119,53 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("PlacesReviewed") as! MyReviewedTableViewCell
+    func getimage(){
         if let user = FIRAuth.auth()?.currentUser {
+            
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
-            self.ref.child("posts").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                
-                if snapshot.hasChild("-KOay46uft4DPa_ZTTlP"){
+            let postRef = self.ref.child("user-posts").childByAutoId()
+            let key = postRef.key
+            self.ref.child("user-posts").child(key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                //print(snapshot.children.allObjects.debugDescription)
+                print(snapshot.debugDescription)
+                if snapshot.hasChild("key"){
                     // set image locatin
-                    let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("image_data")"
+                    let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("user/posts/postImage")"
                     let storage = FIRStorage.storage()
-                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/")
+                    let meta  = FIRStorageMetadata()
+                    meta.contentType = "image/jpg"
+                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
                     storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
-                        
-                        let userPhoto = UIImage(data: data!)
-                        cell.cellImage.image = userPhoto
+                        if(error == nil){
+                            let userPhoto = UIImage(data: data!)
+                            
+                            self.myImage = userPhoto
+                            //cell.cellImage.image = userPhoto
+                            //self.myTableView.reloadData()
+                        }else{
+                            print(error.debugDescription)
+                        }
                     })
                 }else{
+                    
                     //let defImage = user.photoURL
                     let storage = FIRStorage.storage()
                     let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
                     storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                         
                         let userPhoto = UIImage(data: data!)
-                        cell.cellImage.image = userPhoto
+                        self.myImage = userPhoto
                     })
                     
                 }
             })
         }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("PlacesReviewed") as! MyReviewedTableViewCell
+        
         if self.myReviewedArray == nil {
             let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data")
             self.myReviewedArray = [myPost]
@@ -156,6 +173,7 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
             cell.nameLabel.adjustsFontSizeToFitWidth = true
             cell.addressLabel.text = self.myReviewedArray[indexPath.item].Address
             cell.addressLabel.adjustsFontSizeToFitWidth = true
+            cell.imageView?.image = self.myImage
             
         }else{
             cell.nameLabel.text = self.myReviewedArray[indexPath.item].Name

@@ -19,7 +19,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var messageName: UILabel!
     var ref:FIRDatabaseReference!
-    var reviewedArray: [AnyObject]!
+    var reviewedArray: [Posts]!
     
     
     override func viewDidLoad() {
@@ -35,9 +35,13 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
                     let storage = FIRStorage.storage()
                     let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
                     storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        if (data == nil){
+                            print(error.debugDescription)
+                        }else{
+                            let userPhoto = UIImage(data: data!)
+                            self.proPic.image = userPhoto
+                        }
                         
-                        let userPhoto = UIImage(data: data!)
-                        self.proPic.image = userPhoto
                     })
                 }else{
                     //let defImage = user.photoURL
@@ -56,13 +60,20 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     
 
     func fireBaseFunc() {
-        self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/posts")
+        self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/user-posts")
         self.ref.queryOrderedByChild("starCount").observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists(){
                 for child in snapshot.children{
-                    //print(child)
+                    
                     let myName = child.value["name"] as! String
-                    self.reviewedArray.append(myName)
+                    
+                    let myAdd = child.value["address"] as! String
+                    let type = child.value["type"] as! String
+                    let urlString = child.value["image_path"] as! String
+                    let rating = child.value["starCount"] as! Double
+                    let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString)
+                    
+                    self.reviewedArray.append(myPost)
                     self.myTableView.reloadData()
                     
                 }
@@ -126,7 +137,8 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.reviewedArray == nil {
-            self.reviewedArray = [""]
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data")
+            self.reviewedArray = [myPost]
             return self.reviewedArray.count
         }else{
             return self.reviewedArray.count
@@ -137,12 +149,18 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         let cell = tableView.dequeueReusableCellWithIdentifier("HomeTableViewCell") as! HomeTableViewCell
         //let thumbils:[String] = [ pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10]
         if self.reviewedArray == nil {
-            self.reviewedArray = [""]
-            cell.postersName.text = self.reviewedArray[indexPath.item] as? String
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data")
+            self.reviewedArray = [myPost]
+            cell.postersName.text = self.reviewedArray[indexPath.item].Name
             cell.postersName.adjustsFontSizeToFitWidth = true
+            cell.myTextView.text = self.reviewedArray[indexPath.item].Address
+ 
+            //cell.imageView?.image = self.myImage
+            
         }else{
-            cell.postersName.text = self.reviewedArray[indexPath.item] as? String
+            cell.postersName.text = self.reviewedArray[indexPath.item].Name
             cell.postersName.adjustsFontSizeToFitWidth = true
+            cell.myTextView.text = self.reviewedArray[indexPath.item].Address
         }
         //cell.myImageView?.image = UIImage(named: thumbils[indexPath.row])
         //cell.myUserName?.text = testArray[indexPath.item]

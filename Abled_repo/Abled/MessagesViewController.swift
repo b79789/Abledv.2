@@ -28,23 +28,18 @@ class MessagesViewController: UIViewController {
     let pic10 = "wman4.jpeg"
     override func viewDidLoad() {
         super.viewDidLoad()
-
         if let user = FIRAuth.auth()?.currentUser {
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
+                print(snapshot.description)
                 if snapshot.hasChild("userPhoto"){
                     // set image locatin
                     let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
                     let storage = FIRStorage.storage()
                     let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
                     storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
-                        let name = user.displayName
-                        if (name != nil) {
-                            self.userNameLabel.text = "User: " + name!
-                        }else{
-                            self.userNameLabel.text = "User: Updating..."
-                        }
+                        
                         let userPhoto = UIImage(data: data!)
                         self.proPic.image = userPhoto
                     })
@@ -59,11 +54,6 @@ class MessagesViewController: UIViewController {
                     })
                     
                 }
-            })
-        }else{
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Login")
-                self.presentViewController(viewController, animated: true, completion: nil)
             })
         }
     }

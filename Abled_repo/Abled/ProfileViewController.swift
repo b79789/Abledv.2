@@ -13,7 +13,7 @@ import FirebaseStorage
 
 
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController , UINavigationControllerDelegate , UIImagePickerControllerDelegate{
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var email: UITextField!
@@ -23,7 +23,9 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var deleteProfile: UIButton!
     @IBOutlet weak var reEamil: UITextField!
     @IBOutlet weak var rePass: UITextField!
+    @IBOutlet weak var proPic: UIImageView!
     var ref:FIRDatabaseReference!
+    var picker = UIImagePickerController()
     
     var launchBool: Bool = false {
         didSet {
@@ -53,6 +55,10 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let imageView = self.profilePic
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(ProfileViewController.changePicAction(_:)))
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
         circularImage(profilePic)
         getProfileInfo()
         if let user = FIRAuth.auth()?.currentUser {
@@ -68,6 +74,7 @@ class ProfileViewController: UIViewController {
                         
                         let userPhoto = UIImage(data: data!)
                         self.profilePic.image = userPhoto
+                        self.proPic.image = userPhoto
                     })
                 }else{
                     //let defImage = user.photoURL
@@ -77,6 +84,7 @@ class ProfileViewController: UIViewController {
                         
                         let userPhoto = UIImage(data: data!)
                         self.profilePic.image = userPhoto
+                        self.proPic.image = userPhoto
                     })
                     
                 }
@@ -87,10 +95,11 @@ class ProfileViewController: UIViewController {
 
     }
     
+ 
+    
     override func viewWillAppear(animated: Bool) {
         
         
-        //setInfo()
     }
     @IBAction func editProfile(sender: AnyObject) {
         
@@ -281,6 +290,93 @@ class ProfileViewController: UIViewController {
         photoImageView!.clipsToBounds = true
         photoImageView!.layer.borderWidth = 0.5
         photoImageView!.contentMode = UIViewContentMode.ScaleToFill
+    }
+    
+    @IBAction func changePicAction(sender: AnyObject) {
+        
+        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.Default)
+        {
+            UIAlertAction in
+            self.openCamera()
+        }
+        let gallaryAction = UIAlertAction(title: "Gallary", style: UIAlertActionStyle.Default)
+        {
+            UIAlertAction in
+            self.openGallary()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+        {
+            UIAlertAction in
+        }
+        
+        // Add the actions
+        picker.delegate = self
+        alert.addAction(cameraAction)
+        alert.addAction(gallaryAction)
+        alert.addAction(cancelAction)
+        alert.popoverPresentationController?.sourceView  = self.view
+        alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+        
+    }
+    func openCamera(){
+        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
+            picker.sourceType = UIImagePickerControllerSourceType.Camera
+            self .presentViewController(picker, animated: true, completion: nil)
+        }else{
+            let alert = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: UIAlertControllerStyle.Alert);
+            showViewController(alert, sender: self);
+            alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+                alert.dismissViewControllerAnimated(true, completion: nil)
+            }))
+        }
+    }
+    func openGallary(){
+        picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        self.presentViewController(picker, animated: true, completion: nil)
+    }
+    
+    //MARK:UIImagePickerControllerDelegate
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]){
+        picker .dismissViewControllerAnimated(true, completion: nil)
+        profilePic.image=info[UIImagePickerControllerOriginalImage] as? UIImage
+        
+        let pickedImage:UIImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let imageData = UIImagePNGRepresentation(pickedImage)
+        profilePic.image = pickedImage
+        dismissViewControllerAnimated(true, completion: nil)
+        var data = NSData()
+        data = UIImageJPEGRepresentation(profilePic.image!, 0.8)!
+        // set upload path
+        let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+        let metaData = FIRStorageMetadata()
+        metaData.contentType = "image/jpg"
+        let storage = FIRStorage.storage()
+        let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+        storageRef.child(filePath).putData(data, metadata: metaData){(metaData,error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }else{
+                //store downloadURL
+                let downloadURL = metaData!.downloadURL()!.absoluteString
+                //store downloadURL at database
+                self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+                self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).updateChildValues(["userPhoto": downloadURL])
+            }
+            
+        }
+        
+        //        let imageFile:PFFile = PFFile(data: imageData!)!
+        //        PFUser.currentUser()!.setObject(imageFile, forKey:"profilePic")
+        //        PFUser.currentUser()!.saveInBackground()
+        
+    }
+    func imagePickerControllerDidCancel(picker: UIImagePickerController){
+        print("picker cancel.")
+        
     }
 
 }

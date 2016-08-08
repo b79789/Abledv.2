@@ -39,18 +39,12 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
         locationPosition()
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "customcell1")
         
-        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways){
-            let currentLocation = self.locationManager.location
-            let longitude = currentLocation!.coordinate.longitude
-            let latitude = currentLocation!.coordinate.latitude
-            locale = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
-            fetchPlacesNearCoordinate(locale, radius: 2000, types: [""])
-  
-        }
+    
         if let user = FIRAuth.auth()?.currentUser {
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
+                print(snapshot.description)
                 if snapshot.hasChild("userPhoto"){
                     // set image locatin
                     let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
@@ -77,6 +71,14 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
     }
     
     override func viewWillAppear(animated: Bool) {
+        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways){
+            let currentLocation = self.locationManager.location
+            let longitude = currentLocation!.coordinate.longitude
+            let latitude = currentLocation!.coordinate.latitude
+            locale = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
+            fetchPlacesNearCoordinate(locale, radius: 2000, types: [""])
+            
+        }
         
         if let user = FIRAuth.auth()?.currentUser {
             let name = user.displayName

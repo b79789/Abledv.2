@@ -113,9 +113,9 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
                                  self.finalURLString = downloadURL
                                 let key = self.ref.child("posts").childByAutoId().key
                                 if (self.finalURLString != nil) {
-                                    let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type!, "image_path": self.finalURLString, "starCount": self.finalRating]
-                                    let childUpdates = ["/posts/\(key)": post,
-                                        "/user-posts/\(user.uid)/\(key)/": post]
+                                    let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type!, "image_path": self.finalURLString, "starCount": self.finalRating, "key": key]
+                                    let childUpdates = ["/posts/": post,
+                                        "/user-posts/)\(user.uid)/": post]
                                     self.ref.updateChildValues(childUpdates)
                                     let secondViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PlacesReviewed") as! PlacesReviewController
                                     self.navigationController?.pushViewController(secondViewController, animated: true)

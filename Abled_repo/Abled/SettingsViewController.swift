@@ -30,6 +30,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
         self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             // check if user has photo
+            print(snapshot.description)
             if snapshot.hasChild("userPhoto"){
                 // set image locatin
                 let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
