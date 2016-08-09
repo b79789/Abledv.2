@@ -24,7 +24,7 @@ class EnterReviewDataController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let user = FIRAuth.auth()?.currentUser {
+        if (FIRAuth.auth()?.currentUser) != nil {
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo

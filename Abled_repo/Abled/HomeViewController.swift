@@ -20,12 +20,15 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     @IBOutlet weak var messageName: UILabel!
     var ref:FIRDatabaseReference!
     var reviewedArray: [Posts]!
-    
+    var myImage: UIImage!
+    var imageArray: [UIImage]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        if let user = FIRAuth.auth()?.currentUser {
+        if (FIRAuth.auth()?.currentUser) != nil {
+            fireBaseFunc()
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
@@ -60,21 +63,38 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     
 
     func fireBaseFunc() {
+        self.imageArray = [UIImage]()
+        self.reviewedArray = [Posts]()
         self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/user-posts")
-        self.ref.queryOrderedByChild("starCount").observeEventType(.Value, withBlock: { snapshot in
+        self.ref.queryOrderedByChild("key").observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists(){
                 for child in snapshot.children{
                     
-                    let myName = child.value["name"] as! String
-                    
-                    let myAdd = child.value["address"] as! String
-                    let type = child.value["type"] as! String
-                    let urlString = child.value["image_path"] as! String
-                    let rating = child.value["starCount"] as! Double
-                    let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString)
-                    
-                    self.reviewedArray.append(myPost)
-                    self.myTableView.reloadData()
+                    for item in child.children{
+                        let myName = item.value["name"] as! String
+                        
+                        let myAdd = item.value["address"] as! String
+                        let type = item.value["type"] as! String
+                        let urlString = item.value["image_path"] as! String
+                        let rating = item.value["starCount"] as! Double
+                        let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString)
+                        let storage = FIRStorage.storage()
+                        storage.referenceForURL(urlString).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                            if(error == nil){
+                               
+                                let userPhoto = UIImage(data: data!)
+                                self.imageArray.append(userPhoto!)
+                                self.reviewedArray.append(myPost)
+                                self.myTableView.reloadData()
+                                //self.myImage = userPhoto
+                                //cell.cellImage.image = userPhoto
+                                
+                            }else{
+                                print(error.debugDescription)
+                            }
+                        })
+                        
+                    }
                     
                 }
             }
@@ -82,8 +102,8 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     }
     
     override func viewWillAppear(animated: Bool) {
-        fireBaseFunc()
         if let user = FIRAuth.auth()?.currentUser {
+            
             let name = user.displayName
             let email = user.email
             //let photoUrl = user.photoURL
@@ -154,21 +174,21 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
             cell.postersName.text = self.reviewedArray[indexPath.item].Name
             cell.postersName.adjustsFontSizeToFitWidth = true
             cell.myTextView.text = self.reviewedArray[indexPath.item].Address
- 
-            //cell.imageView?.image = self.myImage
+            cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+            cell.imageView?.clipsToBounds = true
+            cell.imageView?.image = self.imageArray[indexPath.item]
             
         }else{
             cell.postersName.text = self.reviewedArray[indexPath.item].Name
             cell.postersName.adjustsFontSizeToFitWidth = true
             cell.myTextView.text = self.reviewedArray[indexPath.item].Address
+            
+            cell.imageView?.image = self.imageArray[indexPath.item]
+
+            cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+            cell.imageView?.clipsToBounds = true
+            
         }
-        //cell.myImageView?.image = UIImage(named: thumbils[indexPath.row])
-        //cell.myUserName?.text = testArray[indexPath.item]
-        //cell.myTextView?.text = commentArray[indexPath.item]
-        //cell.postersName?.text = testArray[indexPath.item]
-        //cell.myUserName?.text = testArray[indexPath.item]
-        //cell.textLabel?.text = testArray[indexPath.item]
-        //cell.imageView?.image = UIImage(named: thumbils[indexPath.row])
         
         return cell
     }

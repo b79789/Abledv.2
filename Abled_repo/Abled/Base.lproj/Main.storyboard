@@ -12,8 +12,8 @@
             <string>AvenirNext-Regular</string>
             <string>AvenirNext-Regular</string>
             <string>AvenirNext-DemiBold</string>
-            <string>AvenirNext-DemiBold</string>
             <string>AvenirNext-Regular</string>
+            <string>AvenirNext-DemiBold</string>
             <string>AvenirNext-Regular</string>
             <string>AvenirNext-Regular</string>
             <string>AvenirNext-Regular</string>
@@ -668,7 +668,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="282"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yyV-x8-M96">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yyV-x8-M96">
                                                     <rect key="frame" x="2" y="30" width="440" height="247"/>
                                                 </imageView>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Comments from user" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gAk-fI-92H">
@@ -1056,7 +1056,7 @@
                                     <constraint firstAttribute="width" constant="45" id="vxl-Tm-qHR"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="E955DC6F-1B36-448A-BE4B-14B3CEBA3BA1" translatesAutoresizingMaskIntoConstraints="NO" id="Ov8-Zq-vD8">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="5D6E8EB5-ACEC-437F-B9DD-925B4879B7B0" translatesAutoresizingMaskIntoConstraints="NO" id="Ov8-Zq-vD8">
                                 <rect key="frame" x="200" y="405" width="200" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="EBO-gu-0Dw"/>
@@ -2671,8 +2671,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AbledText2.png" width="451" height="110"/>
-        <image name="E955DC6F-1B36-448A-BE4B-14B3CEBA3BA1" width="200" height="200">
+        <image name="5D6E8EB5-ACEC-437F-B9DD-925B4879B7B0" width="200" height="200">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -4743,6 +4742,7 @@ ogAAAKQAAACmAAAAqAAAAK0AAADEAAAAxgAAAMgAAeKMAAHikQAB4pwAAeKlAAHiuAAB4rwAAeLHAAHi
 LQAB4zIAAeM6AAHjPQAB408AAeNSAAHjVwAAAAAAAAQBAAAAAAAAAD4AAAAAAAAAAAAAAAAAAeNZA
 </mutableData>
         </image>
+        <image name="AbledText2.png" width="451" height="110"/>
         <image name="MB__home.png" width="30" height="30"/>
         <image name="adddPhoto.png" width="128" height="128"/>
         <image name="checkmark.png" width="30" height="30"/>

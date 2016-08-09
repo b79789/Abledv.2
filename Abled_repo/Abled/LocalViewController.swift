@@ -40,7 +40,7 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "customcell1")
         
     
-        if let user = FIRAuth.auth()?.currentUser {
+        if (FIRAuth.auth()?.currentUser) != nil {
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
@@ -72,6 +72,7 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
     
     override func viewWillAppear(animated: Bool) {
         if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways){
+            self.locationManager.stopUpdatingLocation()
             let currentLocation = self.locationManager.location
             let longitude = currentLocation!.coordinate.longitude
             let latitude = currentLocation!.coordinate.latitude

@@ -35,7 +35,7 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let user = FIRAuth.auth()?.currentUser {
+        if (FIRAuth.auth()?.currentUser) != nil {
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
@@ -109,13 +109,12 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
                                 let downloadURL = metaData!.downloadURL()!.absoluteString
                                 //store downloadURL at database
                                 self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
-                                self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).updateChildValues(["postPhoto": downloadURL])
-                                 self.finalURLString = downloadURL
-                                let key = self.ref.child("posts").childByAutoId().key
-                                if (self.finalURLString != nil) {
+                                self.finalURLString = downloadURL
+                                let key = self.ref.child("user-posts").childByAutoId().key
+                                if (self.finalURLString != nil ) {
                                     let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type!, "image_path": self.finalURLString, "starCount": self.finalRating, "key": key]
-                                    let childUpdates = ["/posts/": post,
-                                        "/user-posts/)\(user.uid)/": post]
+                                    let childUpdates = ["/posts/\(key)": post,
+                                        "/user-posts/)\(user.uid)/\(key)": post]
                                     self.ref.updateChildValues(childUpdates)
                                     let secondViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PlacesReviewed") as! PlacesReviewController
                                     self.navigationController?.pushViewController(secondViewController, animated: true)

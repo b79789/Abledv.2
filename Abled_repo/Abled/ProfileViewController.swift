@@ -61,7 +61,7 @@ class ProfileViewController: UIViewController , UINavigationControllerDelegate ,
         imageView.addGestureRecognizer(tapGestureRecognizer)
         circularImage(profilePic)
         getProfileInfo()
-        if let user = FIRAuth.auth()?.currentUser {
+        if (FIRAuth.auth()?.currentUser) != nil{
             self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
@@ -344,7 +344,7 @@ class ProfileViewController: UIViewController , UINavigationControllerDelegate ,
         profilePic.image=info[UIImagePickerControllerOriginalImage] as? UIImage
         
         let pickedImage:UIImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        let imageData = UIImagePNGRepresentation(pickedImage)
+        _ = UIImagePNGRepresentation(pickedImage)
         profilePic.image = pickedImage
         dismissViewControllerAnimated(true, completion: nil)
         var data = NSData()
