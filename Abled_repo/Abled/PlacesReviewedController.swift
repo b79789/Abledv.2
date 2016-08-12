@@ -20,6 +20,11 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
     var myReviewedArray: [Posts]!
     var myImage: UIImage!
     var imageArray: [UIImage]!
+    var nameString = String()
+    var addString = String()
+    var commentstext = String()
+    var ratingPassed = Double()
+    var imageString = UIImage()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,23 +32,27 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "customcell")
         if (FIRAuth.auth()?.currentUser) != nil {
             fireBaseFunc()
-            self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+            self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
                 if snapshot.hasChild("userPhoto"){
                     // set image locatin
                     let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
                     let storage = FIRStorage.storage()
-                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                    let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/image_data")
                     storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        if (data != nil){
+                            let userPhoto = UIImage(data: data!)
+                            self.proPic.image = userPhoto
+                        }else{
+                            print(error.debugDescription)
+                        }
                         
-                        let userPhoto = UIImage(data: data!)
-                        self.proPic.image = userPhoto
                     })
                 }else{
                     //let defImage = user.photoURL
                     let storage = FIRStorage.storage()
-                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                    let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/defaultImage/No_Image_Available.png")
                     storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                         
                         let userPhoto = UIImage(data: data!)
@@ -57,21 +66,21 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func fireBaseFunc() {
-        self.imageArray = [UIImage]()
-        self.myReviewedArray = [Posts]()
-        self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/user-posts")
-        self.ref.queryOrderedByChild("key").observeEventType(.Value, withBlock: { snapshot in
+        let id = (FIRAuth.auth()?.currentUser?.uid)! as String
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/user-posts/)\(id)")
+        self.ref.queryOrderedByKey().observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists(){
                 for child in snapshot.children{
-                    
-                    for item in child.children{
-                        let myName = item.value["name"] as! String
-                        
-                        let myAdd = item.value["address"] as! String
-                        let type = item.value["type"] as! String
-                        let urlString = item.value["image_path"] as! String
-                        let rating = item.value["starCount"] as! Double
-                        let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString)
+                        self.imageArray = [UIImage]()
+                        self.myReviewedArray = [Posts]()
+                        let myName = child.value["name"] as! String
+                        let myAdd = child.value["address"] as! String
+                        let myComment = child.value["placeComments"] as! String
+                        let type = child.value["type"] as! String
+                        let urlString = child.value["image_path"] as! String
+                        let rating = child.value["starCount"] as! Double
+                        let myKey = child.value["key"] as! String
+                    let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey)
                         let storage = FIRStorage.storage()
                         storage.referenceForURL(urlString).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                                 if(error == nil){
@@ -86,9 +95,7 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
                                     print(error.debugDescription)
                                 }
                             })
-     
-                    }
-                    
+  
                 }
             }
         })
@@ -120,6 +127,18 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
 
         
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toDetail" {
+            if let destination = segue.destinationViewController as? DetailView {
+                destination.nameString = self.nameString
+                destination.addString = self.addString
+                destination.ratingPassed = self.ratingPassed
+                destination.imageString = self.imageString
+                destination.commentstext = self.commentstext
+            }
+        }
+    }
 
    
     
@@ -144,7 +163,7 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCellWithIdentifier("PlacesReviewed") as! MyReviewedTableViewCell
         
         if self.myReviewedArray == nil {
-            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data")
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data")
             self.myReviewedArray = [myPost]
             cell.nameLabel.text = self.myReviewedArray[indexPath.item].Name
             cell.nameLabel.adjustsFontSizeToFitWidth = true
@@ -158,6 +177,8 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
             cell.addressLabel.text = self.myReviewedArray[indexPath.item].Address
             cell.addressLabel.adjustsFontSizeToFitWidth = true
             print(self.imageArray.count)
+            cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFill
+            cell.imageView?.clipsToBounds = true
             cell.imageView?.image = self.imageArray[indexPath.item]
         }
         
@@ -173,9 +194,14 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         let row = indexPath.row
-        print("Row: \(row)")
+        nameString = self.myReviewedArray[row].Name
+        addString = self.myReviewedArray[row].Address
+        ratingPassed = self.myReviewedArray[row].Rating
         
-        print(self.myReviewedArray[row] )
+        imageString = self.imageArray[row]
+        print( self.myReviewedArray[row].Rating.description)
+        commentstext = self.myReviewedArray[row].myComment
+        performSegueWithIdentifier("toDetail", sender: self)
         
     }
     
@@ -185,7 +211,14 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
     
      func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            // handle delete (by removing the data from your array and updating the tableview)
+            let row = indexPath.row
+            let id = (FIRAuth.auth()?.currentUser?.uid)! as String
+            self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/user-posts/)\(id)")
+            _ = self.ref.child("user-posts").childByAutoId().key
+            let myKey = self.myReviewedArray[row].myKey
+            self.ref.child("\(myKey)").removeValue()
+            self.myReviewedArray.removeAtIndex(row)
+            self.myTableView.reloadData()
         }
     }
 }

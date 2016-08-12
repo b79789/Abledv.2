@@ -12,9 +12,11 @@ import FirebaseDatabase
 import FirebaseStorage
 import Photos
 
-class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate   {
 
-    @IBOutlet weak var imageView: UIImageView!
+class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate   {
+
+    @IBOutlet weak var starRating: HCSStarRatingView!
+    @IBOutlet weak var yourTextView: UITextView!
     @IBOutlet weak var addPicButton: UIButton!
     @IBOutlet weak var proPic: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -27,32 +29,42 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     //Create an empty array
     var myArray: [String] = [String]()
     let storage = FIRStorage.storage()
-    var cosmosView: CosmosView!
     var finalRating: Double!
     var finalImage: UIImage!
     var finalURL: NSURL!
     var finalURLString: String!
+    var testDBL = Double()
+    private let startRating:Float = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        yourTextView.delegate = self
+        yourTextView.text = "Placeholder text goes right here..."
+        yourTextView.textColor = UIColor.lightGrayColor()
+        
+
         if (FIRAuth.auth()?.currentUser) != nil {
-            self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+            self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
                 if snapshot.hasChild("userPhoto"){
                     // set image locatin
                     let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
                     let storage = FIRStorage.storage()
-                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                    let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/image_data")
                     storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                         
-                        let userPhoto = UIImage(data: data!)
-                        self.proPic.image = userPhoto
+                        if (data != nil){
+                            let userPhoto = UIImage(data: data!)
+                            self.proPic.image = userPhoto
+                        }else{
+                            print(error.debugDescription)
+                        }
                     })
                 }else{
                     //let defImage = user.photoURL
                     let storage = FIRStorage.storage()
-                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                    let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/defaultImage/No_Image_Available.png")
                     storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                         
                         let userPhoto = UIImage(data: data!)
@@ -64,6 +76,29 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         }
         
         
+    }
+    
+    
+    @IBAction func ratingAction(sender: AnyObject) {
+       print( starRating.value.description)
+    }
+    
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        
+        if yourTextView.textColor == UIColor.lightGrayColor() {
+            yourTextView.text = ""
+            yourTextView.textColor = UIColor.blackColor()
+        }
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        
+        if yourTextView.text == "" {
+            
+            yourTextView.text = "Placeholder text ..."
+            yourTextView.textColor = UIColor.lightGrayColor()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -80,26 +115,33 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     }
     
     @IBAction func saveAction(sender: AnyObject) {
-         self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+         self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
+        
         if (self.finalRating == nil){
             self.finalRating = 0
         }
             FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
+                
                 if let user = user {
-                    if self.placeName.text != nil || self.placeAddress != nil || self.placeType != nil || self.finalImage != nil{
+                    if self.placeName.text != nil || self.placeAddress.text != nil || self.placeType.text != nil || self.finalImage != nil || self.yourTextView.text != nil{
                         
                         //var messageRef: FIRDatabaseReference!
                         let name = self.placeName.text
                         let address = self.placeAddress.text
                         let type = self.placeType.text
+                        let comments = self.yourTextView.text
                         var data = NSData()
                         data = UIImageJPEGRepresentation(self.finalImage, 0.8)!
                         // set upload path
-                        let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("user/posts/postImage")"
+                        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
+                        
+                        let key = self.ref.child("user-posts").childByAutoId().key
+                        let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\(key)\("user/posts/postImage")"
                         let metaData = FIRStorageMetadata()
                         metaData.contentType = "image/jpg"
                         let storage = FIRStorage.storage()
-                        let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                        let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/image_data")
+                        
                         storageRef.child(filePath).putData(data, metadata: metaData){(metaData,error) in
                             if let error = error {
                                 print(error.localizedDescription)
@@ -108,11 +150,9 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
                                 //store downloadURL
                                 let downloadURL = metaData!.downloadURL()!.absoluteString
                                 //store downloadURL at database
-                                self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
                                 self.finalURLString = downloadURL
-                                let key = self.ref.child("user-posts").childByAutoId().key
                                 if (self.finalURLString != nil ) {
-                                    let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type!, "image_path": self.finalURLString, "starCount": self.finalRating, "key": key]
+                                    let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type!, "image_path": self.finalURLString, "starCount": self.finalRating, "key": key, "placeComments": comments]
                                     let childUpdates = ["/posts/\(key)": post,
                                         "/user-posts/)\(user.uid)/\(key)": post]
                                     self.ref.updateChildValues(childUpdates)
@@ -241,58 +281,13 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         picker .dismissViewControllerAnimated(true, completion: nil)
         let tempImage:UIImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         let localFile: NSURL = info[UIImagePickerControllerReferenceURL] as! NSURL
-        self.imageView.image = tempImage
+        self.addPicButton.setImage(tempImage, forState: .Normal)
         self.finalImage = tempImage
         self.finalURL = localFile
-//        let imageName = localFile.path! as NSString
-//        imageName.lastPathComponent
-//        let documentDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first! as String
-//        let localPath = NSURL(fileURLWithPath: documentDirectory).URLByAppendingPathComponent(imageName as String)
-//        let imageData: NSData = UIImagePNGRepresentation(tempImage)!
-//        imageData.writeToFile(localPath.absoluteString , atomically: true)
-//        let assets = PHAsset.fetchAssetsWithALAssetURLs([localFile], options: nil)
-//        let asset = assets.firstObject
-//        asset?.requestContentEditingInputWithOptions(nil, completionHandler: { (contentEditingInput, info) in
-//            let imageFile = contentEditingInput?.fullSizeImageURL
-//            self.imgString = imageFile?.absoluteString
-//            let storageRef = self.storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
-//            let uploadTask = storageRef.putFile(imageFile!, metadata: nil) { metadata, error in
-//                if (error != nil) {
-//                    // Uh-oh, an error occurred!
-//                } else {
-//                    // Metadata contains file metadata such as size, content-type, and download URL.
-//                    let downloadURL = metadata!.downloadURL
-//                    
-//                    
-//                }
-//            }
-//            uploadTask.resume()
-//        })
-        
 
     }
     
-//    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-//        picker .dismissViewControllerAnimated(true, completion: nil)
-//        imageView.image=image
-//        
-//        let localFile: NSURL = UIImagePNGRepresentation(image)!
-//        let data: NSData = UIImagePNGRepresentation(image)!
-//        let strBase64:String = data.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-//        self.imgString = strBase64.utf8
-//        let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
-//        let uploadTask = storageRef.putFile(localFile, metadata: nil) { metadata, error in
-//            if (error != nil) {
-//                // Uh-oh, an error occurred!
-//            } else {
-//                // Metadata contains file metadata such as size, content-type, and download URL.
-//               let downloadURL = metadata!.downloadURL
-//                
-//            }
-//        }
-//        uploadTask.resume()
-//    }
-//    
+
 
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {

@@ -16,15 +16,19 @@ class Posts {
     var Type: String
     var Rating: Double
     var MyURL: String
+    var myComment: String
+    var myKey: String
 
     
-    init( name: String?, address: String?, type: String?, rating: Double?, url: String) {
+    init( name: String?, address: String?, type: String?, rating: Double?, url: String?, comment: String?, key: String?) {
         //self.Id = id
         self.Name = name!
         self.Address = address!
         self.Type = type!
         self.Rating = rating!
-        self.MyURL = url
+        self.MyURL = url!
+        self.myComment = comment!
+        self.myKey = key!
 
     }
     

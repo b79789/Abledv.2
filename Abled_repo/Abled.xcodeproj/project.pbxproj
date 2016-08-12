@@ -26,6 +26,10 @@
 		380E31431D5146C60022A30F /* AddPlaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380E31421D5146C60022A30F /* AddPlaceVC.swift */; };
 		38108A4D1D4FE90D00DD7F1C /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 38108A4C1D4FE90C00DD7F1C /* white.png */; };
 		381F347D1D39564D003249BA /* AbledLogo4.png in Resources */ = {isa = PBXBuildFile; fileRef = 381F347C1D39564C003249BA /* AbledLogo4.png */; };
+		38254FED1D5B8B48007C3E8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38254FEC1D5B8B48007C3E8E /* GoogleService-Info.plist */; };
+		38254FEF1D5CF2E6007C3E8E /* filledStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 38254FEE1D5CF2E5007C3E8E /* filledStar.png */; };
+		38254FF11D5CF2FA007C3E8E /* emptyStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 38254FF01D5CF2FA007C3E8E /* emptyStar.png */; };
+		38254FF51D5CFB95007C3E8E /* HCSStarRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38254FF41D5CFB95007C3E8E /* HCSStarRatingView.m */; };
 		382D674B1D4539DC00B9343F /* messageBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 382D674A1D4539DC00B9343F /* messageBubble.png */; };
 		382D674D1D454F4D00B9343F /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D674C1D454F4D00B9343F /* HomeTableViewCell.swift */; };
 		382D67591D455DE300B9343F /* pic1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 382D674F1D455DE300B9343F /* pic1.jpeg */; };
@@ -38,7 +42,6 @@
 		382D67601D455DE300B9343F /* pic7.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 382D67561D455DE300B9343F /* pic7.jpeg */; };
 		382D67611D455DE300B9343F /* pic8.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 382D67571D455DE300B9343F /* pic8.jpeg */; };
 		382D67621D455DE300B9343F /* pic9.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 382D67581D455DE300B9343F /* pic9.jpeg */; };
-		382D67661D4565D900B9343F /* CosmosDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D67651D4565D900B9343F /* CosmosDistrib.swift */; };
 		382D67681D45A56700B9343F /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D67671D45A56700B9343F /* MessagesViewController.swift */; };
 		382D676A1D45A60A00B9343F /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D67691D45A60A00B9343F /* MessagesTableViewCell.swift */; };
 		382D67761D45A9D000B9343F /* man1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 382D676C1D45A9D000B9343F /* man1.jpeg */; };
@@ -104,7 +107,6 @@
 		387923811D5102ED00903014 /* Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387923801D5102ED00903014 /* Places.swift */; };
 		38B5A0551D57B1E900D734E5 /* No_Image_Available.png in Resources */ = {isa = PBXBuildFile; fileRef = 38B5A0541D57B1E900D734E5 /* No_Image_Available.png */; };
 		38B5A0571D57E50400D734E5 /* Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B5A0561D57E50400D734E5 /* Posts.swift */; };
-		38DE897D1D280BC3004280D6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38DE897C1D280BC3004280D6 /* GoogleService-Info.plist */; };
 		38E8EC4B1D3ECFC5000594D2 /* open-road.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 38E8EC4A1D3ECFC5000594D2 /* open-road.jpg */; };
 		872CD8600456252258018569 /* Pods_AbledUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58DECA5F8709648D03BAD850 /* Pods_AbledUITests.framework */; };
 /* End PBXBuildFile section */
@@ -144,6 +146,12 @@
 		380E31421D5146C60022A30F /* AddPlaceVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPlaceVC.swift; sourceTree = "<group>"; };
 		38108A4C1D4FE90C00DD7F1C /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
 		381F347C1D39564C003249BA /* AbledLogo4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AbledLogo4.png; sourceTree = "<group>"; };
+		38254FEC1D5B8B48007C3E8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		38254FEE1D5CF2E5007C3E8E /* filledStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filledStar.png; sourceTree = "<group>"; };
+		38254FF01D5CF2FA007C3E8E /* emptyStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emptyStar.png; sourceTree = "<group>"; };
+		38254FF21D5CFB94007C3E8E /* Abled-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Abled-Bridging-Header.h"; sourceTree = "<group>"; };
+		38254FF31D5CFB95007C3E8E /* HCSStarRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCSStarRatingView.h; sourceTree = "<group>"; };
+		38254FF41D5CFB95007C3E8E /* HCSStarRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCSStarRatingView.m; sourceTree = "<group>"; };
 		382D674A1D4539DC00B9343F /* messageBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messageBubble.png; sourceTree = "<group>"; };
 		382D674C1D454F4D00B9343F /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		382D674F1D455DE300B9343F /* pic1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic1.jpeg; sourceTree = "<group>"; };
@@ -156,7 +164,6 @@
 		382D67561D455DE300B9343F /* pic7.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic7.jpeg; sourceTree = "<group>"; };
 		382D67571D455DE300B9343F /* pic8.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic8.jpeg; sourceTree = "<group>"; };
 		382D67581D455DE300B9343F /* pic9.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic9.jpeg; sourceTree = "<group>"; };
-		382D67651D4565D900B9343F /* CosmosDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmosDistrib.swift; sourceTree = "<group>"; };
 		382D67671D45A56700B9343F /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		382D67691D45A60A00B9343F /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
 		382D676C1D45A9D000B9343F /* man1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = man1.jpeg; sourceTree = "<group>"; };
@@ -228,7 +235,6 @@
 		387923801D5102ED00903014 /* Places.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Places.swift; sourceTree = "<group>"; };
 		38B5A0541D57B1E900D734E5 /* No_Image_Available.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = No_Image_Available.png; sourceTree = "<group>"; };
 		38B5A0561D57E50400D734E5 /* Posts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
-		38DE897C1D280BC3004280D6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		38E8EC4A1D3ECFC5000594D2 /* open-road.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "open-road.jpg"; sourceTree = "<group>"; };
 		3DADAA0E525D15EDFB568A7A /* Pods-Abled.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abled.release.xcconfig"; path = "Pods/Target Support Files/Pods-Abled/Pods-Abled.release.xcconfig"; sourceTree = "<group>"; };
 		41F3DB148DC65F5B41A8850F /* Pods-AbledTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AbledTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AbledTests/Pods-AbledTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -369,7 +375,6 @@
 				386208321C4848770069924F /* SignUpViewController.swift */,
 				386208341C48488A0069924F /* ResetPasswordViewController.swift */,
 				386208361C4848A30069924F /* HomeViewController.swift */,
-				382D67651D4565D900B9343F /* CosmosDistrib.swift */,
 				386208591C498B5D0069924F /* LocalViewController.swift */,
 				383F50EF1D527DDE001C5611 /* MapLocations.swift */,
 				3862085F1C498FB70069924F /* PlacesReviewedController.swift */,
@@ -381,8 +386,8 @@
 				386208631C4994C40069924F /* RatiingControl.swift */,
 				386208651C49B8080069924F /* EnterReviewDataController.swift */,
 				38014F4A1C5194B400B8FE17 /* DetailView.swift */,
-				38DE897C1D280BC3004280D6 /* GoogleService-Info.plist */,
 				382D674C1D454F4D00B9343F /* HomeTableViewCell.swift */,
+				38254FEC1D5B8B48007C3E8E /* GoogleService-Info.plist */,
 				382D67671D45A56700B9343F /* MessagesViewController.swift */,
 				382D67691D45A60A00B9343F /* MessagesTableViewCell.swift */,
 				382D678C1D49782700B9343F /* ProfileViewController.swift */,
@@ -393,6 +398,9 @@
 				387923801D5102ED00903014 /* Places.swift */,
 				380E31421D5146C60022A30F /* AddPlaceVC.swift */,
 				38B5A0561D57E50400D734E5 /* Posts.swift */,
+				38254FF31D5CFB95007C3E8E /* HCSStarRatingView.h */,
+				38254FF41D5CFB95007C3E8E /* HCSStarRatingView.m */,
+				38254FF21D5CFB94007C3E8E /* Abled-Bridging-Header.h */,
 			);
 			path = Abled;
 			sourceTree = "<group>";
@@ -430,6 +438,8 @@
 				38108A4C1D4FE90C00DD7F1C /* white.png */,
 				382D67861D49063400B9343F /* yourphotohere.jpg */,
 				38014F4C1C5A728500B8FE17 /* AbledText2.png */,
+				38254FEE1D5CF2E5007C3E8E /* filledStar.png */,
+				38254FF01D5CF2FA007C3E8E /* emptyStar.png */,
 				382D67801D49002D00B9343F /* adddPhoto.png */,
 				38B5A0541D57B1E900D734E5 /* No_Image_Available.png */,
 				386208161C4834680069924F /* accessible-vacations.jpg */,
@@ -560,7 +570,7 @@
 		384B2DD81C468BED0084AD4C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Brian Stacks";
 				TargetAttributes = {
@@ -604,6 +614,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				382D677E1D45A9D000B9343F /* wman3.jpeg in Resources */,
+				38254FF11D5CF2FA007C3E8E /* emptyStar.png in Resources */,
 				382D677F1D45A9D000B9343F /* wman4.jpeg in Resources */,
 				38B5A0551D57B1E900D734E5 /* No_Image_Available.png in Resources */,
 				38014F631C5AE7BE00B8FE17 /* humpty.png in Resources */,
@@ -616,13 +627,13 @@
 				382D678B1D49770400B9343F /* profileTab.png in Resources */,
 				386208F31C49DD370069924F /* icon_add.png in Resources */,
 				382D677A1D45A9D000B9343F /* man5.jpeg in Resources */,
-				38DE897D1D280BC3004280D6 /* GoogleService-Info.plist in Resources */,
 				38014F5C1C5AE7BE00B8FE17 /* aw.gif in Resources */,
 				382D67761D45A9D000B9343F /* man1.jpeg in Resources */,
 				382D67831D49023700B9343F /* yourphotohere.png in Resources */,
 				384B2DEE1C468BEF0084AD4C /* LaunchScreen.storyboard in Resources */,
 				382D67601D455DE300B9343F /* pic7.jpeg in Resources */,
 				382D677C1D45A9D000B9343F /* wman1.jpeg in Resources */,
+				38254FEF1D5CF2E6007C3E8E /* filledStar.png in Resources */,
 				38014F611C5AE7BE00B8FE17 /* Chi-Chi.gif in Resources */,
 				38014F651C5AE7BE00B8FE17 /* jacks.jpg in Resources */,
 				3862083D1C484F5E0069924F /* close@2x.png in Resources */,
@@ -655,6 +666,7 @@
 				38014F5E1C5AE7BE00B8FE17 /* bjs.png in Resources */,
 				382D675C1D455DE300B9343F /* pic3.jpeg in Resources */,
 				382D675F1D455DE300B9343F /* pic6.jpeg in Resources */,
+				38254FED1D5B8B48007C3E8E /* GoogleService-Info.plist in Resources */,
 				382D67611D455DE300B9343F /* pic8.jpeg in Resources */,
 				382D67621D455DE300B9343F /* pic9.jpeg in Resources */,
 				38014F5D1C5AE7BE00B8FE17 /* barCafe.jpg in Resources */,
@@ -819,6 +831,7 @@
 				386208371C4848A30069924F /* HomeViewController.swift in Sources */,
 				382D678D1D49782700B9343F /* ProfileViewController.swift in Sources */,
 				382D67911D49935300B9343F /* radiisTableViewController.swift in Sources */,
+				38254FF51D5CFB95007C3E8E /* HCSStarRatingView.m in Sources */,
 				382D67951D4AB7CC00B9343F /* MyReviewedTableViewCell.swift in Sources */,
 				380E31431D5146C60022A30F /* AddPlaceVC.swift in Sources */,
 				386208661C49B8080069924F /* EnterReviewDataController.swift in Sources */,
@@ -828,7 +841,6 @@
 				384B2DE61C468BEF0084AD4C /* LoginController.swift in Sources */,
 				382D678F1D498C9B00B9343F /* MenuViewController.swift in Sources */,
 				384B2DE41C468BEF0084AD4C /* AppDelegate.swift in Sources */,
-				382D67661D4565D900B9343F /* CosmosDistrib.swift in Sources */,
 				387923811D5102ED00903014 /* Places.swift in Sources */,
 				386208351C48488A0069924F /* ResetPasswordViewController.swift in Sources */,
 				386208621C4990450069924F /* SettingsViewController.swift in Sources */,
@@ -976,6 +988,7 @@
 			baseConfigurationReference = A1124B671E6A5E8CB4E5DF9E /* Pods-Abled.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -985,6 +998,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fullsail.stacksApp.Abled;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Abled/Abled-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -994,6 +1009,7 @@
 			baseConfigurationReference = 3DADAA0E525D15EDFB568A7A /* Pods-Abled.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1003,6 +1019,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fullsail.stacksApp.Abled;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Abled/Abled-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

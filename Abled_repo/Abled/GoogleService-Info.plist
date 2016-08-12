@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>620593423787-t215l2q28c121q2ncuhu3t9i2vpmv2vg.apps.googleusercontent.com</string>
+	<string>740293253987-snm8vor4o1kin5rf5d9mg1a6ktmb9img.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.620593423787-t215l2q28c121q2ncuhu3t9i2vpmv2vg</string>
+	<string>com.googleusercontent.apps.740293253987-snm8vor4o1kin5rf5d9mg1a6ktmb9img</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDY3zfNjpeqTY1jJYxZtWN_yNC39ZRRH9U</string>
+	<string>AIzaSyBu5ZU1f8Kuc0ImE-bHsZhD83p9jOHzs80</string>
 	<key>GCM_SENDER_ID</key>
-	<string>620593423787</string>
+	<string>740293253987</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.fullsail.stacksApp.Abled</string>
 	<key>PROJECT_ID</key>
-	<string>stacksapp-7b63c</string>
+	<string>abled-e36b6</string>
 	<key>STORAGE_BUCKET</key>
-	<string>stacksapp-7b63c.appspot.com</string>
+	<string>abled-e36b6.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:620593423787:ios:98434db0184dc107</string>
+	<string>1:740293253987:ios:98434db0184dc107</string>
 	<key>DATABASE_URL</key>
-	<string>https://stacksapp-7b63c.firebaseio.com</string>
+	<string>https://abled-e36b6.firebaseio.com</string>
 </dict>
 </plist>

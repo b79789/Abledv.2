@@ -8,11 +8,12 @@
 
 import Foundation
 import UIKit
-import Parse
+import Firebase
 
 class ResetPasswordViewController: UIViewController {
     
     @IBOutlet weak var emailField: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,14 +24,27 @@ class ResetPasswordViewController: UIViewController {
     }
     
     @IBAction func passwordReset(sender: AnyObject) {
+        
+        
         let email = self.emailField.text
         let finalEmail = email!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        let alert = UIAlertController (title: "Password Reset", message: "An email containing information on how to reset your password has been sent to " + finalEmail + ".", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
-            alert.dismissViewControllerAnimated(true, completion: nil)
-        }))
-        showViewController(alert, sender: self);
+        if (email != nil || email == FIRAuth.auth()?.currentUser?.email) {
+            FIRAuth.auth()?.sendPasswordResetWithEmail(email!) { error in
+                if let error = error {
+                    let alert = UIAlertController (title: "Password Reset Error", message: "An error has been detected : " +  error.debugDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+                        alert.dismissViewControllerAnimated(true, completion: nil)
+                    }))
+                    self.showViewController(alert, sender: self);
+                } else {
+                    let alert = UIAlertController (title: "Password Reset", message: "An email containing information on how to reset your password has been sent to " + finalEmail + ".", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+                        alert.dismissViewControllerAnimated(true, completion: nil)
+                    }))
+                    self.showViewController(alert, sender: self);            }
+            }
+            
+        }
     }
-
     
 }

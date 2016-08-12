@@ -27,7 +27,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         if (FIRAuth.auth()?.currentUser) != nil {
-        self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
         self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             // check if user has photo
             print(snapshot.description)
@@ -35,16 +35,19 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                 // set image locatin
                 let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
                 let storage = FIRStorage.storage()
-                let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/image_data")
                 storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
-                    
-                    let userPhoto = UIImage(data: data!)
-                    self.profilePic.image = userPhoto
+                    if (data != nil){
+                        let userPhoto = UIImage(data: data!)
+                        self.profilePic.image = userPhoto
+                    }else{
+                        print(error.debugDescription)
+                    }
                 })
             }else{
                 //let defImage = user.photoURL
                 let storage = FIRStorage.storage()
-                let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/defaultImage/No_Image_Available.png")
                 storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                     
                     let userPhoto = UIImage(data: data!)
@@ -118,7 +121,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         let metaData = FIRStorageMetadata()
         metaData.contentType = "image/jpg"
         let storage = FIRStorage.storage()
-        let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+        let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/image_data")
         storageRef.child(filePath).putData(data, metadata: metaData){(metaData,error) in
             if let error = error {
                 print(error.localizedDescription)
@@ -127,7 +130,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                 //store downloadURL
                 let downloadURL = metaData!.downloadURL()!.absoluteString
                 //store downloadURL at database
-                self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+                self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
                 self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).updateChildValues(["userPhoto": downloadURL])
             }
 

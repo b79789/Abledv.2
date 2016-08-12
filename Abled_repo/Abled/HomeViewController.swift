@@ -29,14 +29,14 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         if (FIRAuth.auth()?.currentUser) != nil {
             fireBaseFunc()
-            self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/")
+            self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
                 if snapshot.hasChild("userPhoto"){
                     // set image locatin
                     let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
                     let storage = FIRStorage.storage()
-                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/image_data")
+                    let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/image_data")
                     storageRef.child(filePath).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                         if (data == nil){
                             print(error.debugDescription)
@@ -49,11 +49,12 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
                 }else{
                     //let defImage = user.photoURL
                     let storage = FIRStorage.storage()
-                    let storageRef = storage.referenceForURL("gs://stacksapp-7b63c.appspot.com/defaultImage/No_Image_Available.png")
+                    let storageRef = storage.referenceForURL("gs://abled-e36b6.appspot.com/defaultImage/No_Image_Available.png")
                     storageRef.dataWithMaxSize(20*1024*1024, completion: { (data, error) in
-                        
+                        if(data != nil){
                         let userPhoto = UIImage(data: data!)
                         self.proPic.image = userPhoto
+                        }
                     })
                     
                 }
@@ -65,19 +66,20 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     func fireBaseFunc() {
         self.imageArray = [UIImage]()
         self.reviewedArray = [Posts]()
-        self.ref = FIRDatabase.database().referenceFromURL("https://stacksapp-7b63c.firebaseio.com/user-posts")
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com//user-posts")
         self.ref.queryOrderedByChild("key").observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists(){
                 for child in snapshot.children{
                     
                     for item in child.children{
                         let myName = item.value["name"] as! String
-                        
+                        let myComment = item.value["placeComments"] as! String
                         let myAdd = item.value["address"] as! String
                         let type = item.value["type"] as! String
                         let urlString = item.value["image_path"] as! String
                         let rating = item.value["starCount"] as! Double
-                        let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString)
+                        let myKey = item.value["key"] as! String
+                        let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey)
                         let storage = FIRStorage.storage()
                         storage.referenceForURL(urlString).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                             if(error == nil){
@@ -157,7 +159,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.reviewedArray == nil {
-            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data")
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data")
             self.reviewedArray = [myPost]
             return self.reviewedArray.count
         }else{
@@ -169,24 +171,24 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         let cell = tableView.dequeueReusableCellWithIdentifier("HomeTableViewCell") as! HomeTableViewCell
         //let thumbils:[String] = [ pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10]
         if self.reviewedArray == nil {
-            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data")
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data")
             self.reviewedArray = [myPost]
             cell.postersName.text = self.reviewedArray[indexPath.item].Name
             cell.postersName.adjustsFontSizeToFitWidth = true
-            cell.myTextView.text = self.reviewedArray[indexPath.item].Address
-            cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-            cell.imageView?.clipsToBounds = true
+            cell.myTextView.text = self.reviewedArray[indexPath.item].myComment
+            
             cell.imageView?.image = self.imageArray[indexPath.item]
             
         }else{
             cell.postersName.text = self.reviewedArray[indexPath.item].Name
             cell.postersName.adjustsFontSizeToFitWidth = true
-            cell.myTextView.text = self.reviewedArray[indexPath.item].Address
+            cell.myTextView.text = self.reviewedArray[indexPath.item].myComment
+            if (imageArray != nil) {
+                cell.imageView?.image = self.imageArray[indexPath.item]
+                
+                
+            }
             
-            cell.imageView?.image = self.imageArray[indexPath.item]
-
-            cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-            cell.imageView?.clipsToBounds = true
             
         }
         
@@ -206,5 +208,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         //self.navigationController!.pushViewController(viewController, animated: true)
         
     }
+    
+    
     
 }
