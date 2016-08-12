@@ -13,8 +13,9 @@ import FirebaseStorage
 import Photos
 
 
-class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate   {
+class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource   {
 
+    @IBOutlet weak var UnitTypePicker: UIPickerView!
     @IBOutlet weak var starRating: HCSStarRatingView!
     @IBOutlet weak var yourTextView: UITextView!
     @IBOutlet weak var addPicButton: UIButton!
@@ -34,14 +35,16 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     var finalURL: NSURL!
     var finalURLString: String!
     var testDBL = Double()
-    private let startRating:Float = 1
+    let UnitDataArray = [ "accounting", "airport","amusement_park","aquarium","art_gallery","atm","bakery","bank","bar","beauty_salon","bicycle_store","book_store","bowling_alley","bus_station","cafe","campground","car_dealer","car_rental","car_repair","car_wash","casino","cemetery","church","city_hall","clothing_store","convenience_store","courthouse","dentist","department_store","doctor","electrician","electronics_store","embassy","fire_station","florist","funeral_home","furniture_store","gas_station","gym","hair_care","hardware_store","hindu_temple","home_goods_store","hospital","insurance_agency","jewelry_store","laundry","lawyer","library","liquor_store","local_government_office","locksmith","lodging","meal_delivery","meal_takeaway","mosque","movie_rental","movie_theater","moving_company","museum","night_club","painter","park","parking","pet_store","pharmacy","physiotherapist","plumber","police","post_office","real_estate_agency","restaurant","roofing_contractor","rv_park","school","shoe_store","shopping_mall","spa","stadium","storage","store","subway_station","synagogue","taxi_stand","train_station","transit_station","travel_agency","university","veterinary_care","zoo","Other"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         yourTextView.delegate = self
         yourTextView.text = "Placeholder text goes right here..."
         yourTextView.textColor = UIColor.lightGrayColor()
-        
+        UnitTypePicker.delegate = self
+        UnitTypePicker.dataSource = self
 
         if (FIRAuth.auth()?.currentUser) != nil {
             self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
@@ -112,6 +115,20 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         
         self.dismissViewControllerAnimated(true, completion: nil)
         
+    }
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return UnitDataArray.count
+    }
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return UnitDataArray[row]
+    }
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let myTypeString: String = UnitDataArray[row]
+        print(myTypeString)
     }
     
     @IBAction func saveAction(sender: AnyObject) {
