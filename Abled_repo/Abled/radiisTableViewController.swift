@@ -10,9 +10,12 @@ import UIKit
 
 class radiisTableViewController: UITableViewController {
 
+    var array: [String] = ["5 Miles", "10 Miles", "25 Miles"]
+    var appRadius: Double!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.tableView.registerClass(UITableViewCell.classForKeyedArchiver(), forCellReuseIdentifier: "cell")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -36,17 +39,45 @@ class radiisTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return 3
     }
-
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.row == 0){
+            fiveMile()
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }else if (indexPath.row == 1){
+            tenMile()
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }else if (indexPath.row == 2){
+            twentfiveMile()
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
     }
-    */
 
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell")
+        cell!.textLabel?.text = array[indexPath.row]
+        return cell!
+    }
+ 
+    func fiveMile(){
+        appRadius = 8046
+        NSUserDefaults.standardUserDefaults().setObject(appRadius, forKey: "radius")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    func tenMile(){
+        appRadius = 16093
+        NSUserDefaults.standardUserDefaults().setObject(appRadius, forKey: "radius")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    func twentfiveMile(){
+        appRadius = 40233
+        NSUserDefaults.standardUserDefaults().setObject(appRadius, forKey: "radius")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

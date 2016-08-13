@@ -23,7 +23,6 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var placeName: UITextField!
     @IBOutlet weak var placeAddress: UITextField!
-    @IBOutlet weak var placeType: UITextField!
     var myPicker = UIImagePickerController()
     var ref:FIRDatabaseReference!
     var imgString: String!
@@ -35,13 +34,14 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     var finalURL: NSURL!
     var finalURLString: String!
     var testDBL = Double()
+    var finalType: String!
     let UnitDataArray = [ "accounting", "airport","amusement_park","aquarium","art_gallery","atm","bakery","bank","bar","beauty_salon","bicycle_store","book_store","bowling_alley","bus_station","cafe","campground","car_dealer","car_rental","car_repair","car_wash","casino","cemetery","church","city_hall","clothing_store","convenience_store","courthouse","dentist","department_store","doctor","electrician","electronics_store","embassy","fire_station","florist","funeral_home","furniture_store","gas_station","gym","hair_care","hardware_store","hindu_temple","home_goods_store","hospital","insurance_agency","jewelry_store","laundry","lawyer","library","liquor_store","local_government_office","locksmith","lodging","meal_delivery","meal_takeaway","mosque","movie_rental","movie_theater","moving_company","museum","night_club","painter","park","parking","pet_store","pharmacy","physiotherapist","plumber","police","post_office","real_estate_agency","restaurant","roofing_contractor","rv_park","school","shoe_store","shopping_mall","spa","stadium","storage","store","subway_station","synagogue","taxi_stand","train_station","transit_station","travel_agency","university","veterinary_care","zoo","Other"]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         yourTextView.delegate = self
-        yourTextView.text = "Placeholder text goes right here..."
+        yourTextView.text = "Add comments here..."
         yourTextView.textColor = UIColor.lightGrayColor()
         UnitTypePicker.delegate = self
         UnitTypePicker.dataSource = self
@@ -83,7 +83,9 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     
     
     @IBAction func ratingAction(sender: AnyObject) {
-       print( starRating.value.description)
+        self.finalRating = Double(starRating.value)
+        print(self.finalRating.description)
+       
     }
     
     
@@ -99,7 +101,7 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         
         if yourTextView.text == "" {
             
-            yourTextView.text = "Placeholder text ..."
+            yourTextView.text = "Add comments here..."
             yourTextView.textColor = UIColor.lightGrayColor()
         }
     }
@@ -108,7 +110,7 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         
         myFunc()
         myFunc2()
-        myFunc3()
+
     }
     
     @IBAction func fakeSave(sender: AnyObject) {
@@ -123,29 +125,75 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return UnitDataArray.count
     }
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return UnitDataArray[row]
-    }
+    
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let myTypeString: String = UnitDataArray[row]
-        print(myTypeString)
+        self.finalType = myTypeString
+    }
+    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let attributedString = NSAttributedString(string: UnitDataArray[row], attributes: [NSForegroundColorAttributeName : UIColor.orangeColor()])
+        return attributedString
     }
     
+    
     @IBAction func saveAction(sender: AnyObject) {
+         if (self.placeName.text == "" ){
+            let alert = UIAlertController(title: "Name Error", message: "Please enter name.", preferredStyle: UIAlertControllerStyle.Alert);
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
+            alert.popoverPresentationController?.sourceView  = self.view
+            alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
+            presentViewController(alert, animated: true, completion: nil);
+
+        }else if (self.placeAddress.text == ""){
+            let alert = UIAlertController(title: "Address Error", message: "Please enter address.", preferredStyle: UIAlertControllerStyle.Alert);
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
+            alert.popoverPresentationController?.sourceView  = self.view
+            alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
+            presentViewController(alert, animated: true, completion: nil);
+        }else if (self.finalRating == nil){
+            let alert = UIAlertController(title: "Rating Error", message: "Please select rating.", preferredStyle: UIAlertControllerStyle.Alert);
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
+            alert.popoverPresentationController?.sourceView  = self.view
+            alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
+            presentViewController(alert, animated: true, completion: nil);
+            
+        }else if(self.finalType == nil){
+            let alert = UIAlertController(title: " Select Type Error", message: "Please select type.", preferredStyle: UIAlertControllerStyle.Alert);
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
+            alert.popoverPresentationController?.sourceView  = self.view
+            alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
+            presentViewController(alert, animated: true, completion: nil);
+            
+        }else if (self.finalImage == nil){
+            let alert = UIAlertController(title: "Image Error", message: "Please select image.", preferredStyle: UIAlertControllerStyle.Alert);
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
+            alert.popoverPresentationController?.sourceView  = self.view
+            alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
+            presentViewController(alert, animated: true, completion: nil);
+
+        }else if (self.yourTextView.text == nil){
+            let alert = UIAlertController(title: "Comment Error", message: "Please add comment.", preferredStyle: UIAlertControllerStyle.Alert);
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
+            alert.popoverPresentationController?.sourceView  = self.view
+            alert.popoverPresentationController?.sourceRect = CGRectMake(self.view.frame.width/4, self.view.frame.height/4,0,0)
+            presentViewController(alert, animated: true, completion: nil);
+
+        }else{
          self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
-        
-        if (self.finalRating == nil){
-            self.finalRating = 0
-        }
             FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
-                
                 if let user = user {
-                    if self.placeName.text != nil || self.placeAddress.text != nil || self.placeType.text != nil || self.finalImage != nil || self.yourTextView.text != nil{
-                        
+                    
+                    
                         //var messageRef: FIRDatabaseReference!
                         let name = self.placeName.text
                         let address = self.placeAddress.text
-                        let type = self.placeType.text
+                        let type = self.finalType
                         let comments = self.yourTextView.text
                         var data = NSData()
                         data = UIImageJPEGRepresentation(self.finalImage, 0.8)!
@@ -169,7 +217,7 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
                                 //store downloadURL at database
                                 self.finalURLString = downloadURL
                                 if (self.finalURLString != nil ) {
-                                    let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type!, "image_path": self.finalURLString, "starCount": self.finalRating, "key": key, "placeComments": comments]
+                                    let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type, "image_path": self.finalURLString, "starCount": self.finalRating, "key": key, "placeComments": comments]
                                     let childUpdates = ["/posts/\(key)": post,
                                         "/user-posts/)\(user.uid)/\(key)": post]
                                     self.ref.updateChildValues(childUpdates)
@@ -188,7 +236,7 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
                             }
                             }
                             
-                        }
+                    
                         
                 } else {
                     // No user is signed in.
@@ -199,7 +247,8 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
                     print("No user signed in")
                 }
             }
-            
+        }
+        
         }
     
     
@@ -207,7 +256,7 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         let borderWidth:CGFloat = 2.0 // what ever border width do you prefer
         let bottomLine = CALayer()
         
-        bottomLine.frame = CGRectMake(0.0, placeName.frame.size.height  - borderWidth, placeName.frame.size.width, placeName.frame.size.height )
+        bottomLine.frame = CGRectMake(0.0, placeName.frame.size.height  - borderWidth, self.view.frame.size.width, self.view.frame.size.height )
         bottomLine.backgroundColor = UIColor.grayColor().CGColor
         bottomLine
         placeName.layer.addSublayer(bottomLine)
@@ -220,24 +269,14 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         let borderWidth:CGFloat = 2.0 // what ever border width do you prefer
         let bottomLine = CALayer()
         
-        bottomLine.frame = CGRectMake(0.0, placeAddress.frame.size.height  - borderWidth, placeAddress.frame.size.width, placeAddress.frame.size.height )
+        bottomLine.frame = CGRectMake(0.0, placeAddress.frame.size.height  - borderWidth, self.view.frame.size.width, self.view.frame.size.height )
         bottomLine.backgroundColor = UIColor.grayColor().CGColor
         bottomLine
         placeAddress.layer.addSublayer(bottomLine)
         placeAddress.layer.masksToBounds = true
         
     }
-    func myFunc3() {
-        let borderWidth:CGFloat = 2.0 // what ever border width do you prefer
-        let bottomLine = CALayer()
-        
-        bottomLine.frame = CGRectMake(0.0, placeType.frame.size.height  - borderWidth, placeType.frame.size.width, placeType.frame.size.height )
-        bottomLine.backgroundColor = UIColor.grayColor().CGColor
-        bottomLine
-        placeType.layer.addSublayer(bottomLine)
-        placeType.layer.masksToBounds = true
-        
-    }
+
     
     @IBAction func savePicAction(sender: AnyObject) {
         let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)

@@ -32,12 +32,12 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
     var placeLat: Double!
     var placeLon: Double!
     var ref:FIRDatabaseReference!
+    var myCurrentLat: Double!
+    var myCurrentLon: Double!
+    var appRadius: Double!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.locationManager = CLLocationManager()
-        self.locationManager.startUpdatingLocation()
-        locationPosition()
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "customcell1")
         
     
@@ -75,17 +75,7 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
     }
     
     override func viewWillAppear(animated: Bool) {
-        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways){
-            self.locationManager = CLLocationManager()
-            self.locationManager.startUpdatingLocation()
-            let currentLocation = self.locationManager.location
-            let longitude = currentLocation!.coordinate.longitude
-            let latitude = currentLocation!.coordinate.latitude
-            locale = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
-            fetchPlacesNearCoordinate(locale, radius: 2000, types: [""])
-            
-        }
-        
+        determineMyCurrentLocation()
         if let user = FIRAuth.auth()?.currentUser {
             let name = user.displayName
             //let email = user.email
@@ -96,8 +86,6 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
             }else{
                 self.userNameLabel.text = "User: Updating..."
             }
-            
-            myTableView.reloadData()
         } else {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Login")
@@ -107,14 +95,73 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
         }
     }
     
-    func locationPosition(){
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+    func determineMyCurrentLocation() {
+        self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            self.locationManager.startUpdatingLocation()
+            print("its right")
+            //locationManager.startUpdatingHeading()
+        }else{
+            print("What i thought")
+        }
     }
-  
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
+    {
+        
+         let location:CLLocation = locations[0] as CLLocation
+        locale = location.coordinate
+        var value = NSUserDefaults.standardUserDefaults().objectForKey("radius") as? Double
+        if (value == nil) {
+            value = 40233
+        }
+        fetchPlacesNearCoordinate(locale, radius: value!, types: [""])
+        myTableView.reloadData()
+        myCurrentLat = location.coordinate.latitude
+        myCurrentLon = location.coordinate.longitude
+        //print(locale)
+        let center = CLLocationCoordinate2D(latitude: myCurrentLat, longitude: myCurrentLon)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025))
+        self.mapView.setRegion(region, animated: true)
+        for place in placesArray{
+            
+            let annotation2 = MapLocations(title: place.Name, subtitle: place.Address, coordinate: CLLocationCoordinate2D(latitude: place.Lat, longitude:  place.Lon))
+            mapView.addAnnotation(annotation2)
+        }
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = center
+        annotation.title = "Here"
+        annotation.subtitle = "You Are"
+        mapView.addAnnotation(annotation)
+        manager.stopUpdatingLocation()
+    }
+
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError)
+    {
+        print("Error \(error)")
+    }
+    
+    func mapView(mapView: MKMapView,
+                 viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation {
+            return nil
+        }
+        let reuseId = "pin"
+        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView!.canShowCallout = true
+            pinView?.pinTintColor = UIColor.orangeColor()
+            pinView!.animatesDrop = true
+        }
+        else {
+            pinView!.annotation = annotation
+        }
+        return pinView
+    }
     
     func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double, types:[String]) {
         var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=\("AIzaSyBPJj0Q7wW1ofFZ3icRSPwau6qda4yA7Pw")&location=\(coordinate.latitude),\(coordinate.longitude)&radius=\(radius)&rankBy=distance&sensor=true"
@@ -242,49 +289,6 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
         let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("AddPlace");
         self.navigationController!.pushViewController(viewController, animated: true)
         
-    }
-    
-  
-    func mapView(mapView: MKMapView,
-                 viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation is MKUserLocation {
-            return nil
-        }
-        let reuseId = "pin"
-        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
-            pinView?.pinTintColor = UIColor.orangeColor()
-            pinView!.animatesDrop = true
-        }
-        else {
-            pinView!.annotation = annotation
-        }
-        return pinView
-    }
-    
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
-    {
-        
-        let location = locations.last! as CLLocation
-        locale = location.coordinate
-        
-        
-        //print(locale)
-        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025))
-        self.mapView.setRegion(region, animated: true)
-        for place in placesArray{
-
-            let annotation2 = MapLocations(title: place.Name, subtitle: place.Address, coordinate: CLLocationCoordinate2D(latitude: place.Lat, longitude:  place.Lon))
-            mapView.addAnnotation(annotation2)
-        }
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = center
-        annotation.title = "Here"
-        annotation.subtitle = "You Are"
-        mapView.addAnnotation(annotation)
     }
     
     func loadMyImage(urlString: String!) {

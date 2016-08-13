@@ -176,9 +176,6 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
             cell.nameLabel.adjustsFontSizeToFitWidth = true
             cell.addressLabel.text = self.myReviewedArray[indexPath.item].Address
             cell.addressLabel.adjustsFontSizeToFitWidth = true
-            print(self.imageArray.count)
-            cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFill
-            cell.imageView?.clipsToBounds = true
             cell.imageView?.image = self.imageArray[indexPath.item]
         }
         
