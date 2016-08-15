@@ -71,6 +71,10 @@
 		384B2DEE1C468BEF0084AD4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 384B2DEC1C468BEF0084AD4C /* LaunchScreen.storyboard */; };
 		384B2DF91C468BF10084AD4C /* AbledTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384B2DF81C468BF10084AD4C /* AbledTests.swift */; };
 		384B2E041C468BF10084AD4C /* AbledUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384B2E031C468BF10084AD4C /* AbledUITests.swift */; };
+		38593E4A1D5FCC0A00DA7657 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E491D5FCC0900DA7657 /* Messages.swift */; };
+		38593E891D60D91800DA7657 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 38593E881D60D91800DA7657 /* edit.png */; };
+		38593E8B1D60DD2E00DA7657 /* ProfileTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E8A1D60DD2E00DA7657 /* ProfileTable.swift */; };
+		38593E8D1D60FAA900DA7657 /* proCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E8C1D60FAA900DA7657 /* proCell.swift */; };
 		386208171C4834680069924F /* accessible-vacations.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 386208161C4834680069924F /* accessible-vacations.jpg */; };
 		386208331C4848770069924F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386208321C4848770069924F /* SignUpViewController.swift */; };
 		386208351C48488A0069924F /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386208341C48488A0069924F /* ResetPasswordViewController.swift */; };
@@ -199,6 +203,10 @@
 		384B2DFF1C468BF10084AD4C /* AbledUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AbledUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		384B2E031C468BF10084AD4C /* AbledUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbledUITests.swift; sourceTree = "<group>"; };
 		384B2E051C468BF10084AD4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		38593E491D5FCC0900DA7657 /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
+		38593E881D60D91800DA7657 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
+		38593E8A1D60DD2E00DA7657 /* ProfileTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTable.swift; sourceTree = "<group>"; };
+		38593E8C1D60FAA900DA7657 /* proCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = proCell.swift; sourceTree = "<group>"; };
 		386208161C4834680069924F /* accessible-vacations.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "accessible-vacations.jpg"; sourceTree = "<group>"; };
 		386208321C4848770069924F /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		386208341C48488A0069924F /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
@@ -401,6 +409,9 @@
 				38254FF31D5CFB95007C3E8E /* HCSStarRatingView.h */,
 				38254FF41D5CFB95007C3E8E /* HCSStarRatingView.m */,
 				38254FF21D5CFB94007C3E8E /* Abled-Bridging-Header.h */,
+				38593E491D5FCC0900DA7657 /* Messages.swift */,
+				38593E8A1D60DD2E00DA7657 /* ProfileTable.swift */,
+				38593E8C1D60FAA900DA7657 /* proCell.swift */,
 			);
 			path = Abled;
 			sourceTree = "<group>";
@@ -437,6 +448,7 @@
 				38014F4E1C5A784200B8FE17 /* abledHomePageText.png */,
 				38108A4C1D4FE90C00DD7F1C /* white.png */,
 				382D67861D49063400B9343F /* yourphotohere.jpg */,
+				38593E881D60D91800DA7657 /* edit.png */,
 				38014F4C1C5A728500B8FE17 /* AbledText2.png */,
 				38254FEE1D5CF2E5007C3E8E /* filledStar.png */,
 				38254FF01D5CF2FA007C3E8E /* emptyStar.png */,
@@ -669,6 +681,7 @@
 				38254FED1D5B8B48007C3E8E /* GoogleService-Info.plist in Resources */,
 				382D67611D455DE300B9343F /* pic8.jpeg in Resources */,
 				382D67621D455DE300B9343F /* pic9.jpeg in Resources */,
+				38593E891D60D91800DA7657 /* edit.png in Resources */,
 				38014F5D1C5AE7BE00B8FE17 /* barCafe.jpg in Resources */,
 				386208EB1C49DBB30069924F /* MB__home.png in Resources */,
 				38014F641C5AE7BE00B8FE17 /* jackinthebox_restaurant_thumb.png in Resources */,
@@ -822,15 +835,18 @@
 			files = (
 				382D67681D45A56700B9343F /* MessagesViewController.swift in Sources */,
 				382D67931D4AB7B600B9343F /* LocalTableViewCell.swift in Sources */,
+				38593E8B1D60DD2E00DA7657 /* ProfileTable.swift in Sources */,
 				382D676A1D45A60A00B9343F /* MessagesTableViewCell.swift in Sources */,
 				386208601C498FB70069924F /* PlacesReviewedController.swift in Sources */,
 				38014F4B1C5194B400B8FE17 /* DetailView.swift in Sources */,
 				382D674D1D454F4D00B9343F /* HomeTableViewCell.swift in Sources */,
 				3862085A1C498B5E0069924F /* LocalViewController.swift in Sources */,
+				38593E4A1D5FCC0A00DA7657 /* Messages.swift in Sources */,
 				38B5A0571D57E50400D734E5 /* Posts.swift in Sources */,
 				386208371C4848A30069924F /* HomeViewController.swift in Sources */,
 				382D678D1D49782700B9343F /* ProfileViewController.swift in Sources */,
 				382D67911D49935300B9343F /* radiisTableViewController.swift in Sources */,
+				38593E8D1D60FAA900DA7657 /* proCell.swift in Sources */,
 				38254FF51D5CFB95007C3E8E /* HCSStarRatingView.m in Sources */,
 				382D67951D4AB7CC00B9343F /* MyReviewedTableViewCell.swift in Sources */,
 				380E31431D5146C60022A30F /* AddPlaceVC.swift in Sources */,

@@ -80,7 +80,8 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
                         let urlString = child.value["image_path"] as! String
                         let rating = child.value["starCount"] as! Double
                         let myKey = child.value["key"] as! String
-                    let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey)
+                        let userName = child.value["userName"] as! String
+                    let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey, user: userName)
                         let storage = FIRStorage.storage()
                         storage.referenceForURL(urlString).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                                 if(error == nil){
@@ -163,7 +164,7 @@ class PlacesReviewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCellWithIdentifier("PlacesReviewed") as! MyReviewedTableViewCell
         
         if self.myReviewedArray == nil {
-            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data")
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data", user: "No Data")
             self.myReviewedArray = [myPost]
             cell.nameLabel.text = self.myReviewedArray[indexPath.item].Name
             cell.nameLabel.adjustsFontSizeToFitWidth = true

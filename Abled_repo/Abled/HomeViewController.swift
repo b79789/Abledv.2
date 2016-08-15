@@ -11,6 +11,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 import FirebaseStorage
+import Social
 
 class HomeViewController: UIViewController , UIPopoverPresentationControllerDelegate
 {
@@ -79,7 +80,9 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
                         let urlString = item.value["image_path"] as! String
                         let rating = item.value["starCount"] as! Double
                         let myKey = item.value["key"] as! String
-                        let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey)
+                        let userName = item.value["userName"] as! String
+                        
+                        let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey, user: userName)
                         let storage = FIRStorage.storage()
                         storage.referenceForURL(urlString).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                             if(error == nil){
@@ -107,10 +110,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         if let user = FIRAuth.auth()?.currentUser {
             
             let name = user.displayName
-            let email = user.email
             //let photoUrl = user.photoURL
-            let uid = user.uid
-            print(email , uid)
             if (name != nil) {
                 self.userNameLabel.text = "User: " + name!
             }else{
@@ -159,7 +159,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.reviewedArray == nil {
-            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data")
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data", user: "No Data")
             self.reviewedArray = [myPost]
             return self.reviewedArray.count
         }else{
@@ -169,20 +169,22 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("HomeTableViewCell") as! HomeTableViewCell
-        //let thumbils:[String] = [ pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10]
         if self.reviewedArray == nil {
-            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data")
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data", user: "No Data")
             self.reviewedArray = [myPost]
-            cell.postersName.text = self.reviewedArray[indexPath.item].Name
+            cell.postersName.text = self.reviewedArray[indexPath.item].userName
             cell.postersName.adjustsFontSizeToFitWidth = true
             cell.myTextView.text = self.reviewedArray[indexPath.item].myComment
+            cell.placeName.text = self.reviewedArray[indexPath.row].Name
             
             cell.imageView?.image = self.imageArray[indexPath.item]
             
         }else{
-            cell.postersName.text = self.reviewedArray[indexPath.item].Name
+            cell.postersName.text = self.reviewedArray[indexPath.item].userName
             cell.postersName.adjustsFontSizeToFitWidth = true
             cell.myTextView.text = self.reviewedArray[indexPath.item].myComment
+            cell.placeName.text = self.reviewedArray[indexPath.row].Name
+            cell.userRating.value = CGFloat(self.reviewedArray[indexPath.row].Rating)
             if (imageArray != nil) {
                 cell.imageView?.image = self.imageArray[indexPath.item]
                 
@@ -198,10 +200,11 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
+        let cell = tableView.dequeueReusableCellWithIdentifier("HomeTableViewCell") as! HomeTableViewCell
         let row = indexPath.row
         print("Row: \(row)")
-        
+        cell.shareButton.tag = indexPath.row
+        cell.shareButton.addTarget(self, action: #selector(HomeViewController.postToFacebookTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         print(self.reviewedArray[row] )
         
         //let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("EnterData");
@@ -209,6 +212,17 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         
     }
     
+    @IBAction func postToFacebookTapped(sender: UIButton) {
+        if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)) {
+            let socialController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            let buttonRow = sender.tag
+            let myText = ("I just reviewed " + self.reviewedArray[buttonRow].Name + " on the Abled App, join me and help the community")
+            socialController.setInitialText(myText)
+            
+            
+            self.presentViewController(socialController, animated: true, completion: nil)
+        }
+    }
     
     
 }

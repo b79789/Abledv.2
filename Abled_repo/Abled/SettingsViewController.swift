@@ -16,16 +16,23 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     @IBOutlet weak var background: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var radiusLabel: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
-    @IBOutlet weak var changePic: UIButton!
     @IBOutlet weak var contactDev: UIButton!
     @IBOutlet weak var themePick: UISegmentedControl!
     var picker = UIImagePickerController()
     var ref:FIRDatabaseReference!
-    
+    var appRadius: Double!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("radius") as? Double
+        if returnValue == nil {
+            appRadius = 40233
+        }else{
+            appRadius = returnValue
+        }
+        
         if (FIRAuth.auth()?.currentUser) != nil {
         self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
         self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
@@ -167,7 +174,18 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     }
     
     override func viewWillAppear(animated: Bool) {
-        
+        let five = "5 Miles"
+        let ten = "10 Miles"
+        let twoFive = "25 Miles"
+        var finalString: String
+        if (appRadius == 40233) {
+            finalString = twoFive
+        }else if appRadius == 16093{
+            finalString = ten
+        }else{
+            finalString = five
+        }
+        radiusLabel.text = ("Radius: " + finalString)
         if let user = FIRAuth.auth()?.currentUser {
             let name = user.displayName
             let email = user.email

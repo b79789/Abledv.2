@@ -217,7 +217,7 @@ class AddPlaceVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
                                 //store downloadURL at database
                                 self.finalURLString = downloadURL
                                 if (self.finalURLString != nil ) {
-                                    let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type, "image_path": self.finalURLString, "starCount": self.finalRating, "key": key, "placeComments": comments]
+                                    let post: [NSObject : AnyObject] = ["uid": user.uid,"name": name!, "address": address!,"type": type, "image_path": self.finalURLString, "starCount": self.finalRating, "key": key, "placeComments": comments, "userName": user.displayName!]
                                     let childUpdates = ["/posts/\(key)": post,
                                         "/user-posts/)\(user.uid)/\(key)": post]
                                     self.ref.updateChildValues(childUpdates)

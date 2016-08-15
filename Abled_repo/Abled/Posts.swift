@@ -18,9 +18,10 @@ class Posts {
     var MyURL: String
     var myComment: String
     var myKey: String
+    var userName: String
 
     
-    init( name: String?, address: String?, type: String?, rating: Double?, url: String?, comment: String?, key: String?) {
+    init( name: String?, address: String?, type: String?, rating: Double?, url: String?, comment: String?, key: String?, user: String?) {
         //self.Id = id
         self.Name = name!
         self.Address = address!
@@ -29,6 +30,7 @@ class Posts {
         self.MyURL = url!
         self.myComment = comment!
         self.myKey = key!
+        self.userName = user!
 
     }
     

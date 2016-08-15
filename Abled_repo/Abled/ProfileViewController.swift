@@ -245,20 +245,6 @@ class ProfileViewController: UIViewController , UINavigationControllerDelegate ,
             self.email.text = email
             let uid = user.uid;  // The user's ID, unique to the Firebase project.
             print([name, email, photoUrl?.absoluteString, uid])
-//            let changeRequest = user.profileChangeRequest()
-//            changeRequest.photoURL = NSURL(fileURLWithPath: "https://firebasestorage.googleapis.com/v0/b/stacksapp-7b63c.appspot.com/o/image_data?alt=media&token=03ac79da-736c-4904-90d9-b0eaefde2541")
-//            changeRequest.commitChangesWithCompletion { error in
-//                if let _ = error {
-//                    print("Try Again")
-//                } else {
-//                    print("Photo Updated")
-//                    let downloadURL =  user.photoURL
-//                    //self.profilePic.image  = UIImage(data: NSData(contentsOfURL: downloadURL!)!)
-//                    
-//                }
-//            }
-            //self.profilePic.image = UIImage(data: imageUrl!)
-            
         } else {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Login")

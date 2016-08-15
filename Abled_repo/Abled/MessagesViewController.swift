@@ -14,6 +14,13 @@ class MessagesViewController: UIViewController {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var proPic: UIImageView!
     var ref:FIRDatabaseReference!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var sendButton: UIButton!
+    var messages: [FIRDataSnapshot]! = []
+    var msglength: NSNumber = 10
+    private var _refHandle: FIRDatabaseHandle!
+    var storageRef: FIRStorageReference!
+    @IBOutlet weak var clientTable: UITableView!
     let testArray = ["Jonny","Wilma","Dusty","Brian78","Ronald","Vickie","Nicole", "Isaiah", "Tony", "Ashlie"]
     let commentArray = ["Very easy access","Smooth","easy in easy out","Not very accessible","Hope more places are like this","Would recommend","Excellent place", "Smooth transitions", "Beautiful and easy", "Exits and entrances are good"]
     let pic1 = "man1.jpeg"

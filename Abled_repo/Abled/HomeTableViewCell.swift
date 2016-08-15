@@ -13,7 +13,11 @@ class HomeTableViewCell: UITableViewCell {
     @IBOutlet var myTextView: UITextView!
     @IBOutlet weak var myUserName: UILabel!
     @IBOutlet weak var postersName: UILabel!
-
+    @IBOutlet weak var placeAddress: UILabel!
+    @IBOutlet weak var placeName: UILabel!
+    @IBOutlet weak var userRating: HCSStarRatingView!
+    @IBOutlet weak var shareButton: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -23,6 +27,7 @@ class HomeTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        
     }
 
 }
