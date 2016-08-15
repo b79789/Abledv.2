@@ -313,4 +313,16 @@ class LocalViewController: UIViewController,CLLocationManagerDelegate, MKMapView
         }
         task.resume()
     }
+    
+    @IBAction func logOutAction(sender: AnyObject){
+        
+        // Send a request to log out a user
+        try! FIRAuth.auth()!.signOut()
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Login")
+            self.presentViewController(viewController, animated: true, completion: nil)
+        })
+        
+    }
 }
