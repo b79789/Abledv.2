@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2DDCA61542189FB09C6B37CB /* Pods_AbledTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7911111B7932435BF5A6FDAF /* Pods_AbledTests.framework */; };
 		33E9737D2CD4C1777DF9DA1F /* Pods_Abled.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCDAD3AB10544AF2E3D152A7 /* Pods_Abled.framework */; };
 		38014F4B1C5194B400B8FE17 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38014F4A1C5194B400B8FE17 /* DetailView.swift */; };
 		38014F4D1C5A728500B8FE17 /* AbledText2.png in Resources */ = {isa = PBXBuildFile; fileRef = 38014F4C1C5A728500B8FE17 /* AbledText2.png */; };
@@ -58,7 +57,6 @@
 		382D67831D49023700B9343F /* yourphotohere.png in Resources */ = {isa = PBXBuildFile; fileRef = 382D67821D49023700B9343F /* yourphotohere.png */; };
 		382D67871D49063400B9343F /* yourphotohere.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 382D67861D49063400B9343F /* yourphotohere.jpg */; };
 		382D678B1D49770400B9343F /* profileTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 382D678A1D49770400B9343F /* profileTab.png */; };
-		382D678D1D49782700B9343F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D678C1D49782700B9343F /* ProfileViewController.swift */; };
 		382D678F1D498C9B00B9343F /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D678E1D498C9B00B9343F /* MenuViewController.swift */; };
 		382D67911D49935300B9343F /* radiisTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D67901D49935300B9343F /* radiisTableViewController.swift */; };
 		382D67931D4AB7B600B9343F /* LocalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D67921D4AB7B600B9343F /* LocalTableViewCell.swift */; };
@@ -67,7 +65,6 @@
 		384B2DE41C468BEF0084AD4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384B2DE31C468BEF0084AD4C /* AppDelegate.swift */; };
 		384B2DE61C468BEF0084AD4C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384B2DE51C468BEF0084AD4C /* LoginController.swift */; };
 		384B2DE91C468BEF0084AD4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 384B2DE71C468BEF0084AD4C /* Main.storyboard */; };
-		384B2DEB1C468BEF0084AD4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 384B2DEA1C468BEF0084AD4C /* Assets.xcassets */; };
 		384B2DEE1C468BEF0084AD4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 384B2DEC1C468BEF0084AD4C /* LaunchScreen.storyboard */; };
 		384B2DF91C468BF10084AD4C /* AbledTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384B2DF81C468BF10084AD4C /* AbledTests.swift */; };
 		384B2E041C468BF10084AD4C /* AbledUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384B2E031C468BF10084AD4C /* AbledUITests.swift */; };
@@ -75,6 +72,11 @@
 		38593E891D60D91800DA7657 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 38593E881D60D91800DA7657 /* edit.png */; };
 		38593E8B1D60DD2E00DA7657 /* ProfileTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E8A1D60DD2E00DA7657 /* ProfileTable.swift */; };
 		38593E8D1D60FAA900DA7657 /* proCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E8C1D60FAA900DA7657 /* proCell.swift */; };
+		38593E8F1D62373E00DA7657 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E8E1D62373E00DA7657 /* Users.swift */; };
+		38593E961D64DA4B00DA7657 /* FollowedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E951D64DA4A00DA7657 /* FollowedView.swift */; };
+		38593E981D64DCD700DA7657 /* FollwedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E971D64DCD700DA7657 /* FollwedTableViewCell.swift */; };
+		38593E9A1D65079F00DA7657 /* SingleMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38593E991D65079F00DA7657 /* SingleMessageViewController.swift */; };
+		38593EA41D65118000DA7657 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 384B2DE71C468BEF0084AD4C /* Main.storyboard */; };
 		386208171C4834680069924F /* accessible-vacations.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 386208161C4834680069924F /* accessible-vacations.jpg */; };
 		386208331C4848770069924F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386208321C4848770069924F /* SignUpViewController.swift */; };
 		386208351C48488A0069924F /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386208341C48488A0069924F /* ResetPasswordViewController.swift */; };
@@ -112,7 +114,6 @@
 		38B5A0551D57B1E900D734E5 /* No_Image_Available.png in Resources */ = {isa = PBXBuildFile; fileRef = 38B5A0541D57B1E900D734E5 /* No_Image_Available.png */; };
 		38B5A0571D57E50400D734E5 /* Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B5A0561D57E50400D734E5 /* Posts.swift */; };
 		38E8EC4B1D3ECFC5000594D2 /* open-road.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 38E8EC4A1D3ECFC5000594D2 /* open-road.jpg */; };
-		872CD8600456252258018569 /* Pods_AbledUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58DECA5F8709648D03BAD850 /* Pods_AbledUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,7 +154,6 @@
 		38254FEC1D5B8B48007C3E8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		38254FEE1D5CF2E5007C3E8E /* filledStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filledStar.png; sourceTree = "<group>"; };
 		38254FF01D5CF2FA007C3E8E /* emptyStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emptyStar.png; sourceTree = "<group>"; };
-		38254FF21D5CFB94007C3E8E /* Abled-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Abled-Bridging-Header.h"; sourceTree = "<group>"; };
 		38254FF31D5CFB95007C3E8E /* HCSStarRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCSStarRatingView.h; sourceTree = "<group>"; };
 		38254FF41D5CFB95007C3E8E /* HCSStarRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCSStarRatingView.m; sourceTree = "<group>"; };
 		382D674A1D4539DC00B9343F /* messageBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messageBubble.png; sourceTree = "<group>"; };
@@ -184,7 +184,6 @@
 		382D67821D49023700B9343F /* yourphotohere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yourphotohere.png; sourceTree = "<group>"; };
 		382D67861D49063400B9343F /* yourphotohere.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yourphotohere.jpg; sourceTree = "<group>"; };
 		382D678A1D49770400B9343F /* profileTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileTab.png; sourceTree = "<group>"; };
-		382D678C1D49782700B9343F /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		382D678E1D498C9B00B9343F /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		382D67901D49935300B9343F /* radiisTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = radiisTableViewController.swift; sourceTree = "<group>"; };
 		382D67921D4AB7B600B9343F /* LocalTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalTableViewCell.swift; sourceTree = "<group>"; };
@@ -207,6 +206,11 @@
 		38593E881D60D91800DA7657 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		38593E8A1D60DD2E00DA7657 /* ProfileTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTable.swift; sourceTree = "<group>"; };
 		38593E8C1D60FAA900DA7657 /* proCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = proCell.swift; sourceTree = "<group>"; };
+		38593E8E1D62373E00DA7657 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
+		38593E951D64DA4A00DA7657 /* FollowedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedView.swift; sourceTree = "<group>"; };
+		38593E971D64DCD700DA7657 /* FollwedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollwedTableViewCell.swift; sourceTree = "<group>"; };
+		38593E991D65079F00DA7657 /* SingleMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleMessageViewController.swift; sourceTree = "<group>"; };
+		38593EA31D650FC400DA7657 /* Abled-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Abled-Bridging-Header.h"; sourceTree = "<group>"; };
 		386208161C4834680069924F /* accessible-vacations.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "accessible-vacations.jpg"; sourceTree = "<group>"; };
 		386208321C4848770069924F /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		386208341C48488A0069924F /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
@@ -245,14 +249,10 @@
 		38B5A0561D57E50400D734E5 /* Posts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
 		38E8EC4A1D3ECFC5000594D2 /* open-road.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "open-road.jpg"; sourceTree = "<group>"; };
 		3DADAA0E525D15EDFB568A7A /* Pods-Abled.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abled.release.xcconfig"; path = "Pods/Target Support Files/Pods-Abled/Pods-Abled.release.xcconfig"; sourceTree = "<group>"; };
-		41F3DB148DC65F5B41A8850F /* Pods-AbledTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AbledTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AbledTests/Pods-AbledTests.debug.xcconfig"; sourceTree = "<group>"; };
 		44CCDB246206A92783E78538 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58DECA5F8709648D03BAD850 /* Pods_AbledUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AbledUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7911111B7932435BF5A6FDAF /* Pods_AbledTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AbledTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		974BEBBDCCFB39F134441BB7 /* Pods-AbledUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AbledUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AbledUITests/Pods-AbledUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		9D4C4EC4B5D32A871310D300 /* Pods-AbledTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AbledTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AbledTests/Pods-AbledTests.release.xcconfig"; sourceTree = "<group>"; };
 		A1124B671E6A5E8CB4E5DF9E /* Pods-Abled.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abled.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Abled/Pods-Abled.debug.xcconfig"; sourceTree = "<group>"; };
-		C1F924F92FB65886E24BA7EE /* Pods-AbledUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AbledUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AbledUITests/Pods-AbledUITests.release.xcconfig"; sourceTree = "<group>"; };
 		FCDAD3AB10544AF2E3D152A7 /* Pods_Abled.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Abled.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -282,7 +282,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DDCA61542189FB09C6B37CB /* Pods_AbledTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,7 +289,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				872CD8600456252258018569 /* Pods_AbledUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,42 +374,21 @@
 		384B2DE21C468BEF0084AD4C /* Abled */ = {
 			isa = PBXGroup;
 			children = (
+				38593EA21D650F7700DA7657 /* CustomObjects */,
+				38593EA11D650F5200DA7657 /* CustomCells */,
+				38593EA01D650EFC00DA7657 /* ViewControllers */,
 				386208401C4852BB0069924F /* Frameworks */,
 				386208151C48337E0069924F /* images */,
 				384B2DE31C468BEF0084AD4C /* AppDelegate.swift */,
-				384B2DE51C468BEF0084AD4C /* LoginController.swift */,
-				386208321C4848770069924F /* SignUpViewController.swift */,
-				386208341C48488A0069924F /* ResetPasswordViewController.swift */,
-				386208361C4848A30069924F /* HomeViewController.swift */,
-				386208591C498B5D0069924F /* LocalViewController.swift */,
 				383F50EF1D527DDE001C5611 /* MapLocations.swift */,
-				3862085F1C498FB70069924F /* PlacesReviewedController.swift */,
-				386208611C4990450069924F /* SettingsViewController.swift */,
 				384B2DE71C468BEF0084AD4C /* Main.storyboard */,
 				384B2DEA1C468BEF0084AD4C /* Assets.xcassets */,
 				384B2DEC1C468BEF0084AD4C /* LaunchScreen.storyboard */,
 				384B2DEF1C468BEF0084AD4C /* Info.plist */,
-				386208631C4994C40069924F /* RatiingControl.swift */,
-				386208651C49B8080069924F /* EnterReviewDataController.swift */,
-				38014F4A1C5194B400B8FE17 /* DetailView.swift */,
-				382D674C1D454F4D00B9343F /* HomeTableViewCell.swift */,
 				38254FEC1D5B8B48007C3E8E /* GoogleService-Info.plist */,
-				382D67671D45A56700B9343F /* MessagesViewController.swift */,
-				382D67691D45A60A00B9343F /* MessagesTableViewCell.swift */,
-				382D678C1D49782700B9343F /* ProfileViewController.swift */,
-				382D678E1D498C9B00B9343F /* MenuViewController.swift */,
-				382D67901D49935300B9343F /* radiisTableViewController.swift */,
-				382D67921D4AB7B600B9343F /* LocalTableViewCell.swift */,
-				382D67941D4AB7CC00B9343F /* MyReviewedTableViewCell.swift */,
-				387923801D5102ED00903014 /* Places.swift */,
-				380E31421D5146C60022A30F /* AddPlaceVC.swift */,
-				38B5A0561D57E50400D734E5 /* Posts.swift */,
+				38593EA31D650FC400DA7657 /* Abled-Bridging-Header.h */,
 				38254FF31D5CFB95007C3E8E /* HCSStarRatingView.h */,
 				38254FF41D5CFB95007C3E8E /* HCSStarRatingView.m */,
-				38254FF21D5CFB94007C3E8E /* Abled-Bridging-Header.h */,
-				38593E491D5FCC0900DA7657 /* Messages.swift */,
-				38593E8A1D60DD2E00DA7657 /* ProfileTable.swift */,
-				38593E8C1D60FAA900DA7657 /* proCell.swift */,
 			);
 			path = Abled;
 			sourceTree = "<group>";
@@ -432,6 +409,54 @@
 				384B2E051C468BF10084AD4C /* Info.plist */,
 			);
 			path = AbledUITests;
+			sourceTree = "<group>";
+		};
+		38593EA01D650EFC00DA7657 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				384B2DE51C468BEF0084AD4C /* LoginController.swift */,
+				386208321C4848770069924F /* SignUpViewController.swift */,
+				386208341C48488A0069924F /* ResetPasswordViewController.swift */,
+				386208361C4848A30069924F /* HomeViewController.swift */,
+				386208591C498B5D0069924F /* LocalViewController.swift */,
+				3862085F1C498FB70069924F /* PlacesReviewedController.swift */,
+				386208611C4990450069924F /* SettingsViewController.swift */,
+				38014F4A1C5194B400B8FE17 /* DetailView.swift */,
+				386208651C49B8080069924F /* EnterReviewDataController.swift */,
+				382D67671D45A56700B9343F /* MessagesViewController.swift */,
+				382D678E1D498C9B00B9343F /* MenuViewController.swift */,
+				382D67901D49935300B9343F /* radiisTableViewController.swift */,
+				380E31421D5146C60022A30F /* AddPlaceVC.swift */,
+				38593E8A1D60DD2E00DA7657 /* ProfileTable.swift */,
+				38593E951D64DA4A00DA7657 /* FollowedView.swift */,
+				38593E991D65079F00DA7657 /* SingleMessageViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		38593EA11D650F5200DA7657 /* CustomCells */ = {
+			isa = PBXGroup;
+			children = (
+				382D674C1D454F4D00B9343F /* HomeTableViewCell.swift */,
+				382D67691D45A60A00B9343F /* MessagesTableViewCell.swift */,
+				382D67921D4AB7B600B9343F /* LocalTableViewCell.swift */,
+				382D67941D4AB7CC00B9343F /* MyReviewedTableViewCell.swift */,
+				38593E8C1D60FAA900DA7657 /* proCell.swift */,
+				38593E971D64DCD700DA7657 /* FollwedTableViewCell.swift */,
+			);
+			name = CustomCells;
+			sourceTree = "<group>";
+		};
+		38593EA21D650F7700DA7657 /* CustomObjects */ = {
+			isa = PBXGroup;
+			children = (
+				387923801D5102ED00903014 /* Places.swift */,
+				38593E8E1D62373E00DA7657 /* Users.swift */,
+				38B5A0561D57E50400D734E5 /* Posts.swift */,
+				38593E491D5FCC0900DA7657 /* Messages.swift */,
+				386208631C4994C40069924F /* RatiingControl.swift */,
+			);
+			name = CustomObjects;
 			sourceTree = "<group>";
 		};
 		386208151C48337E0069924F /* images */ = {
@@ -493,10 +518,6 @@
 			children = (
 				A1124B671E6A5E8CB4E5DF9E /* Pods-Abled.debug.xcconfig */,
 				3DADAA0E525D15EDFB568A7A /* Pods-Abled.release.xcconfig */,
-				41F3DB148DC65F5B41A8850F /* Pods-AbledTests.debug.xcconfig */,
-				9D4C4EC4B5D32A871310D300 /* Pods-AbledTests.release.xcconfig */,
-				974BEBBDCCFB39F134441BB7 /* Pods-AbledUITests.debug.xcconfig */,
-				C1F924F92FB65886E24BA7EE /* Pods-AbledUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -652,7 +673,6 @@
 				382D677B1D45A9D000B9343F /* man6.jpeg in Resources */,
 				386208DD1C49D7E70069924F /* facebook-icon-logo-vector-200x200.png in Resources */,
 				386208F01C49DC600069924F /* icon-settings.png in Resources */,
-				384B2DEB1C468BEF0084AD4C /* Assets.xcassets in Resources */,
 				386208171C4834680069924F /* accessible-vacations.jpg in Resources */,
 				3862083F1C4851EE0069924F /* user-3.png in Resources */,
 				382D67781D45A9D000B9343F /* man3.jpeg in Resources */,
@@ -693,6 +713,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38593EA41D65118000DA7657 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -844,20 +865,23 @@
 				38593E4A1D5FCC0A00DA7657 /* Messages.swift in Sources */,
 				38B5A0571D57E50400D734E5 /* Posts.swift in Sources */,
 				386208371C4848A30069924F /* HomeViewController.swift in Sources */,
-				382D678D1D49782700B9343F /* ProfileViewController.swift in Sources */,
+				38593E961D64DA4B00DA7657 /* FollowedView.swift in Sources */,
 				382D67911D49935300B9343F /* radiisTableViewController.swift in Sources */,
 				38593E8D1D60FAA900DA7657 /* proCell.swift in Sources */,
 				38254FF51D5CFB95007C3E8E /* HCSStarRatingView.m in Sources */,
 				382D67951D4AB7CC00B9343F /* MyReviewedTableViewCell.swift in Sources */,
 				380E31431D5146C60022A30F /* AddPlaceVC.swift in Sources */,
+				38593E9A1D65079F00DA7657 /* SingleMessageViewController.swift in Sources */,
 				386208661C49B8080069924F /* EnterReviewDataController.swift in Sources */,
 				386208641C4994C40069924F /* RatiingControl.swift in Sources */,
 				386208331C4848770069924F /* SignUpViewController.swift in Sources */,
+				38593E8F1D62373E00DA7657 /* Users.swift in Sources */,
 				383F50F01D527DDE001C5611 /* MapLocations.swift in Sources */,
 				384B2DE61C468BEF0084AD4C /* LoginController.swift in Sources */,
 				382D678F1D498C9B00B9343F /* MenuViewController.swift in Sources */,
 				384B2DE41C468BEF0084AD4C /* AppDelegate.swift in Sources */,
 				387923811D5102ED00903014 /* Places.swift in Sources */,
+				38593E981D64DCD700DA7657 /* FollwedTableViewCell.swift in Sources */,
 				386208351C48488A0069924F /* ResetPasswordViewController.swift in Sources */,
 				386208621C4990450069924F /* SettingsViewController.swift in Sources */,
 			);
@@ -1010,6 +1034,25 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Analytics/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseDatabase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleNetworkingUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleParsingUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/JSQMessagesViewController\"",
+					"\"${PODS_ROOT}/Headers/Public/JSQSystemSoundPlayer\"",
+				);
 				INFOPLIST_FILE = Abled/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fullsail.stacksApp.Abled;
@@ -1017,6 +1060,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Abled/Abled-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/lib";
 			};
 			name = Debug;
 		};
@@ -1031,18 +1075,37 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Analytics/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseDatabase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleNetworkingUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleParsingUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/JSQMessagesViewController\"",
+					"\"${PODS_ROOT}/Headers/Public/JSQSystemSoundPlayer\"",
+				);
 				INFOPLIST_FILE = Abled/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fullsail.stacksApp.Abled;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Abled/Abled-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/lib";
 			};
 			name = Release;
 		};
 		384B2E0C1C468BF10084AD4C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 41F3DB148DC65F5B41A8850F /* Pods-AbledTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = AbledTests/Info.plist;
@@ -1055,7 +1118,6 @@
 		};
 		384B2E0D1C468BF10084AD4C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9D4C4EC4B5D32A871310D300 /* Pods-AbledTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = AbledTests/Info.plist;
@@ -1068,7 +1130,6 @@
 		};
 		384B2E0F1C468BF10084AD4C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 974BEBBDCCFB39F134441BB7 /* Pods-AbledUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = AbledUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1081,7 +1142,6 @@
 		};
 		384B2E101C468BF10084AD4C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C1F924F92FB65886E24BA7EE /* Pods-AbledUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = AbledUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

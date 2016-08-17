@@ -23,10 +23,13 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     var reviewedArray: [Posts]!
     var myImage: UIImage!
     var imageArray: [UIImage]!
+    var userArray: NSMutableArray!
+    var mySelected: Posts!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.goToMessage(_:)), name:"refresh", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.addFollower(_:)), name:"refresh2", object: nil)
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         if (FIRAuth.auth()?.currentUser) != nil {
             fireBaseFunc()
@@ -63,6 +66,34 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         }
     }
     
+    func goToMessage(notification: NSNotification){
+        
+        
+        let myUser = Users()
+        myUser.id = mySelected.Id
+        myUser.name = mySelected.Name
+        myUser.url = NSURL(fileURLWithPath:  mySelected.MyURL)
+        let defaults = NSUserDefaults()
+        defaults.setObject(myUser.id, forKey: "myUserID")
+        defaults.setObject(myUser.name, forKey: "myUserName")
+        defaults.synchronize()
+        NSNotificationCenter.defaultCenter().postNotificationName("message", object: nil)
+        //var secondTab = self.tabBarController?.viewControllers[1] as SecondViewController
+        //secondTab.array = firstArray
+        tabBarController?.selectedIndex = 2
+    }
+    
+    func addFollower(notification: NSNotification){
+        
+        print("hit follow")
+
+        let dict = ["UID": mySelected.Id, "Name": mySelected.userName, "URL": mySelected.MyURL]
+        let id = FIRAuth.auth()?.currentUser?.uid
+        let myString = "https://abled-e36b6.firebaseio.com//users//" + id! + "//followers"
+        let followRef  = FIRDatabase.database().referenceFromURL(myString)
+        followRef.child(mySelected.Id).updateChildValues(["myValues": dict])
+        
+    }
 
     func fireBaseFunc() {
         self.imageArray = [UIImage]()
@@ -81,8 +112,9 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
                         let rating = item.value["starCount"] as! Double
                         let myKey = item.value["key"] as! String
                         let userName = item.value["userName"] as! String
+                        let myID = item.value["uid"] as! String
                         
-                        let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey, user: userName)
+                        let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey, user: userName, id: myID)
                         let storage = FIRStorage.storage()
                         storage.referenceForURL(urlString).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
                             if(error == nil){
@@ -128,20 +160,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         
     }
     
-    @IBAction func profileClickButton(sender: AnyObject) {
-        
-        let popoverContent = (self.storyboard?.instantiateViewControllerWithIdentifier("Menu"))! as UIViewController
-        let nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
-        let popover = nav.popoverPresentationController
-        popoverContent.preferredContentSize = CGSizeMake(self.view.frame.width/2, self.view.frame.height/2)
-        popover!.delegate = self
-        popover!.sourceView = self.view
-        popover!.sourceRect = CGRectMake(self.view.frame.width/2, self.view.frame.height/2,0,0)
-        
-        self.navigationController!.presentViewController(nav, animated: true, completion: nil)
-        
-    }
+   
     
     
     
@@ -159,7 +178,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.reviewedArray == nil {
-            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data", user: "No Data")
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data", user: "No Data",id: "")
             self.reviewedArray = [myPost]
             return self.reviewedArray.count
         }else{
@@ -170,14 +189,14 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("HomeTableViewCell") as! HomeTableViewCell
         if self.reviewedArray == nil {
-            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data", user: "No Data")
+            let myPost = Posts(name: "No Data",address: "No Data",type: "No Data",rating: 0,url: "No Data", comment: "No Data", key: "No Data", user: "No Data", id: "")
             self.reviewedArray = [myPost]
             cell.postersName.text = self.reviewedArray[indexPath.item].userName
             cell.postersName.adjustsFontSizeToFitWidth = true
             cell.myTextView.text = self.reviewedArray[indexPath.item].myComment
             cell.placeName.text = self.reviewedArray[indexPath.row].Name
             
-            cell.imageView?.image = self.imageArray[indexPath.item]
+            cell.myImageView?.image = self.imageArray[indexPath.item]
             
         }else{
             cell.postersName.text = self.reviewedArray[indexPath.item].userName
@@ -186,7 +205,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
             cell.placeName.text = self.reviewedArray[indexPath.row].Name
             cell.userRating.value = CGFloat(self.reviewedArray[indexPath.row].Rating)
             if (imageArray != nil) {
-                cell.imageView?.image = self.imageArray[indexPath.item]
+            cell.myImageView?.image = self.imageArray[indexPath.item]
                 
                 
             }
@@ -203,14 +222,31 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         let cell = tableView.dequeueReusableCellWithIdentifier("HomeTableViewCell") as! HomeTableViewCell
         let row = indexPath.row
         print("Row: \(row)")
+        let myObject = reviewedArray[row]
+        mySelected = myObject
+        
         cell.shareButton.tag = indexPath.row
+        print(cell.shareButton.tag.description)
         cell.shareButton.addTarget(self, action: #selector(HomeViewController.postToFacebookTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         print(self.reviewedArray[row] )
+        let popoverContent = (self.storyboard?.instantiateViewControllerWithIdentifier("Menu"))! as UIViewController
+        let nav = UINavigationController(rootViewController: popoverContent)
+        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+        let popover = nav.popoverPresentationController
+        popoverContent.preferredContentSize = CGSizeMake(self.view.frame.width/3, self.view.frame.height/3)
+        popover!.delegate = self
+        popover!.sourceView = self.view
+        popover!.sourceRect = CGRectMake(cell.frame.width/2, cell.frame.height/2,0,0)
+        
+        
+        self.navigationController!.presentViewController(nav, animated: true, completion: nil)
+        
         
         //let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("EnterData");
         //self.navigationController!.pushViewController(viewController, animated: true)
         
     }
+    
     
     @IBAction func postToFacebookTapped(sender: UIButton) {
         if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)) {

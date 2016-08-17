@@ -19,10 +19,11 @@ class Posts {
     var myComment: String
     var myKey: String
     var userName: String
+    var Id: String
 
     
-    init( name: String?, address: String?, type: String?, rating: Double?, url: String?, comment: String?, key: String?, user: String?) {
-        //self.Id = id
+    init( name: String?, address: String?, type: String?, rating: Double?, url: String?, comment: String?, key: String?, user: String?, id: String?) {
+        self.Id = id!
         self.Name = name!
         self.Address = address!
         self.Type = type!

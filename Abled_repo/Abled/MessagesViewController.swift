@@ -21,6 +21,7 @@ class MessagesViewController: UIViewController {
     private var _refHandle: FIRDatabaseHandle!
     var storageRef: FIRStorageReference!
     @IBOutlet weak var clientTable: UITableView!
+    var mySentUser: Users!
     let testArray = ["Jonny","Wilma","Dusty","Brian78","Ronald","Vickie","Nicole", "Isaiah", "Tony", "Ashlie"]
     let commentArray = ["Very easy access","Smooth","easy in easy out","Not very accessible","Hope more places are like this","Would recommend","Excellent place", "Smooth transitions", "Beautiful and easy", "Exits and entrances are good"]
     let pic1 = "man1.jpeg"
@@ -35,11 +36,11 @@ class MessagesViewController: UIViewController {
     let pic10 = "wman4.jpeg"
     override func viewDidLoad() {
         super.viewDidLoad()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessagesViewController.gotToSingleMessage(_:)), name:"message", object: nil)
         if (FIRAuth.auth()?.currentUser) != nil {
             self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
-                print(snapshot.description)
                 if snapshot.hasChild("userPhoto"){
                     // set image locatin
                     let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
@@ -70,7 +71,16 @@ class MessagesViewController: UIViewController {
     }
 
 
+    func gotToSingleMessage(notification: NSNotification){
+
+        print("gotToSingleMessage")
+    
+    }
+    
     override func viewWillAppear(animated: Bool) {
+        
+        let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("myUserID") as? String
+        print(returnValue)
         if let user = FIRAuth.auth()?.currentUser {
             let name = user.displayName
             if (name != nil) {

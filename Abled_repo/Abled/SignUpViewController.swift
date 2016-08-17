@@ -17,9 +17,11 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var reEnterPass: UITextField!
+    var ref:FIRDatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
     }
     
     override func didReceiveMemoryWarning() {
@@ -83,6 +85,7 @@ class SignUpViewController: UIViewController {
                             } else {
                                 // Profile updated.
                                 print("updated", username)
+                                self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).updateChildValues(["userName": username!, "userID": user.uid, "userPhoto": (user.photoURL?.absoluteString)!])
                                 
                             }
                         }

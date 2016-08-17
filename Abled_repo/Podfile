@@ -5,15 +5,7 @@ use_frameworks!
 
 target 'Abled' do
 
-end
 
-target 'AbledTests' do
-
-end
-
-target 'AbledUITests' do
-
-end
 
 pod 'Firebase/Core'
 pod 'Firebase/Database'
@@ -22,3 +14,4 @@ pod 'Firebase/Storage'
 pod 'Firebase/Auth'
 
 
+end

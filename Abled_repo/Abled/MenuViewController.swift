@@ -28,17 +28,17 @@ class MenuViewController: UIViewController {
     }
     
     @IBAction func followAction(sender: AnyObject) {
-        let alert = UIAlertController(title: "Success", message: "You have added this userto your followed users", preferredStyle: UIAlertControllerStyle.Alert);
-        
-        showViewController(alert, sender: self);
-        self.presentedViewController?.dismissViewControllerAnimated(true, completion: nil);
-        
+        NSNotificationCenter.defaultCenter().postNotificationName("refresh2", object: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
+
     }
 
     @IBAction func messageAction(sender: AnyObject) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewControllerWithIdentifier("Messages") as! MessagesViewController
-        self.navigationController?.showViewController(vc, sender: self)
+        NSNotificationCenter.defaultCenter().postNotificationName("refresh", object: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
+
+        
+        
     }
     
     @IBAction func cancelFunc(sender: AnyObject){

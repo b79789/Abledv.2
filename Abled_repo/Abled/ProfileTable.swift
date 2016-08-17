@@ -19,12 +19,17 @@ class ProfileTable: UITableViewController ,UINavigationControllerDelegate , UIIm
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var resetPassButton: UIButton!
     @IBOutlet weak var followersButton: UIButton!
+    @IBOutlet weak var reEamil: UITextField!
+    @IBOutlet weak var rePass: UITextField!
     var ref:FIRDatabaseReference!
     var picker = UIImagePickerController()
     var editTextFieldToggle: Bool = false
+    var followersArray: [Users]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.nameText.enabled = false
+        self.emailText.enabled = false
         let tempImageView = UIImageView(image: UIImage(named: "open-road.jpg"))
         tempImageView.alpha = 0.5
         tempImageView.frame = self.tableView.frame
@@ -77,6 +82,7 @@ class ProfileTable: UITableViewController ,UINavigationControllerDelegate , UIIm
     }
     
     override func viewWillAppear(animated: Bool) {
+        
         editName.userInteractionEnabled = true
         editEmail.userInteractionEnabled = true
         let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ProfileTable.singleTapping(_:)))
@@ -90,13 +96,74 @@ class ProfileTable: UITableViewController ,UINavigationControllerDelegate , UIIm
         imageView.userInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
         circularImage(mainProfileImage)
+        let myString = "https://abled-e36b6.firebaseio.com//users//" + (FIRAuth.auth()?.currentUser?.uid)! + "//followers"
+        let myRef = FIRDatabase.database().referenceFromURL(myString)
+        myRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            
+            if snapshot.exists(){
+                self.followersArray = [Users]()
+                for snap in snapshot.children{
+                    
+                    for child in snap.children{
+                        let myName = child.value["Name"] as! String
+                        let myID = child.value["UID"] as! String
+                        let myURL = child.value["URL"] as! String
+                        let users = Users()
+                        users.name = myName
+                        users.id = myID
+                        users.url = NSURL(string: myURL)!
+                        
+                        self.followersArray.append(users)
+                        
+                        self.setFollowButtton()
+                    }
+                    
+                }
+                
+            }
+            
+        })
+            
+        
+        
         
     }
+    
+    func setFollowButtton(){
+        self.followersButton.setTitle("Followed: " + self.followersArray.count.description, forState: .Normal)
+        print(self.followersArray.count.description)
+    }
+    
+    
     @IBAction func resetAction(sender: AnyObject) {
-        print("hit reset")
+        let email = emailText.text
+        
+        FIRAuth.auth()?.sendPasswordResetWithEmail(email!) { error in
+            if let error = error {
+                let alert = UIAlertController (title:"Error", message: "\(error)",preferredStyle: UIAlertControllerStyle.Alert);
+                self.presentViewController(alert, animated: false, completion: {
+                    sleep(3)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        
+                        alert.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                })
+            } else {
+                let alert = UIAlertController(title: "Email Success", message: "Email has been set to " + email!, preferredStyle: UIAlertControllerStyle.Alert)
+                self.presentViewController(alert, animated: false, completion: {
+                    sleep(1)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        
+                        alert.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                })
+                
+            }
+        }
     }
     
     @IBAction func followersAction(sender: AnyObject) {
+        
         print("hit followers")
     }
     
@@ -112,25 +179,135 @@ class ProfileTable: UITableViewController ,UINavigationControllerDelegate , UIIm
             textFieldDeactive()
             
         }
-        
-        print(" Name image clicked")
     }
+    
     func singleTapping2(recognizer: UIGestureRecognizer) {
-        emailText.allowsEditingTextAttributes = true
-        print(" Email image clicked")
+        editTextFieldToggle = !editTextFieldToggle //switches button ON/OFF
+        
+        if editTextFieldToggle == true {
+            textFieldActive2()
+            emailText.allowsEditingTextAttributes = true
+            emailText.becomeFirstResponder()
+            
+        } else {
+            textFieldDeactive2()
+            
+        }
     }
     
     func textFieldActive(){
-    //Turn things ON
     nameText.enabled = true
-    emailText.enabled = true
+    
     }
     
     func textFieldDeactive(){
-        //Add anything else
-    //Turn things OFF
     nameText.enabled = false
-    emailText.enabled = false
+    
+    }
+    
+    func textFieldActive2(){
+        emailText.enabled = true
+    }
+    
+    func textFieldDeactive2(){
+        emailText.enabled = false
+    }
+    
+    func configurationTextField(textField: UITextField!)
+    {
+        if textField != nil {
+            self.reEamil = textField
+            self.reEamil.placeholder = "User Email"
+        }
+    }
+    
+    func configurationTextField2(textField: UITextField!)
+    {
+        if textField != nil {
+            self.rePass = textField
+            self.rePass.secureTextEntry = true
+            self.rePass.placeholder = "password"
+        }
+    }
+    
+    @IBAction func saveAction(sender: AnyObject) {
+        if (self.nameText.text != nil || self.emailText.text != nil) {
+            let user = FIRAuth.auth()?.currentUser
+            if let user = user {
+                let changeRequest = user.profileChangeRequest()
+                
+                changeRequest.displayName = self.nameText.text
+                user.updateEmail(self.emailText.text!) { error in
+                    if let error = error {
+                        print(error.description)
+                        // An error happened.
+                        let alert = UIAlertController(title: "Sign-in", message: "You must revalidate your credentials", preferredStyle:
+                            UIAlertControllerStyle.Alert)
+                        alert.addTextFieldWithConfigurationHandler(self.configurationTextField)
+                        alert.addTextFieldWithConfigurationHandler(self.configurationTextField2)
+                        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
+                        alert.addAction(UIAlertAction(title: "Signin", style: UIAlertActionStyle.Default, handler:{ (UIAlertAction)in
+                            print("userclicked Signin")
+                            FIRAuth.auth()?.signInWithEmail(alert.textFields![0].text!, password: alert.textFields![1].text!){ (user, error) in
+                                // ...
+                                if ((user) != nil) {
+                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                        let alert = UIAlertController(title: "Updated email", message: "Email up to date.", preferredStyle: UIAlertControllerStyle.Alert)
+                                        self.presentViewController(alert, animated: false, completion: {
+                                            sleep(1)
+                                            dispatch_async(dispatch_get_main_queue(), {
+                                                
+                                                alert.dismissViewControllerAnimated(true, completion: nil)
+                                            })
+                                        })
+                                    })
+                                    
+                                } else {
+                                    let alert = UIAlertController (title:"Error", message: "\(error)",preferredStyle: UIAlertControllerStyle.Alert);
+                                    self.presentViewController(alert, animated: false, completion: {
+                                        sleep(3)
+                                        dispatch_async(dispatch_get_main_queue(), {
+                                            
+                                            alert.dismissViewControllerAnimated(true, completion: nil)
+                                        })
+                                    })
+                                    
+                                }
+                            }
+                        }))
+
+                    } else {
+                        // Email updated.
+                        changeRequest.commitChangesWithCompletion { error in
+                            if let error = error {
+                                print(error.description)
+                                // An error happened.
+                                let alert = UIAlertController(title: "Updated Failed", message: "You are not up to date.", preferredStyle: UIAlertControllerStyle.Alert)
+                                self.presentViewController(alert, animated: false, completion: {
+                                    sleep(3)
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        
+                                        alert.dismissViewControllerAnimated(true, completion: nil)
+                                    })
+                                })
+                            } else {
+                                // Profile updated.
+                                let alert = UIAlertController(title: "Updated Success", message: "You are up to date.", preferredStyle: UIAlertControllerStyle.Alert)
+                                self.presentViewController(alert, animated: false, completion: {
+                                    sleep(3)
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        
+                                        alert.dismissViewControllerAnimated(true, completion: nil)
+                                    })
+                                })
+                                
+                            }
+                        }
+                    }
+                }
+                
+            }
+       }
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
