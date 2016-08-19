@@ -15,6 +15,9 @@ import Social
 
 class HomeViewController: UIViewController , UIPopoverPresentationControllerDelegate
 {
+    @IBOutlet weak var myAllButton: UIButton!
+    @IBOutlet weak var myFollowersButton: UIButton!
+    @IBOutlet weak var myReviewedButton: UIButton!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var proPic: UIImageView!
     @IBOutlet weak var myTableView: UITableView!
@@ -23,11 +26,14 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     var reviewedArray: [Posts]!
     var myImage: UIImage!
     var imageArray: [UIImage]!
-    var userArray: NSMutableArray!
+    var userArray: [Users]!
     var mySelected: Posts!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.myAllButton.selected = true
+        self.myAllButton.backgroundColor = UIColor.orangeColor()
+        self.myAllButton.tintColor = UIColor.clearColor()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.goToMessage(_:)), name:"refresh", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.addFollower(_:)), name:"refresh2", object: nil)
         myTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -98,21 +104,21 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
     func fireBaseFunc() {
         self.imageArray = [UIImage]()
         self.reviewedArray = [Posts]()
-        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com//user-posts")
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com//posts")
         self.ref.queryOrderedByChild("key").observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists(){
                 for child in snapshot.children{
                     
-                    for item in child.children{
-                        let myName = item.value["name"] as! String
-                        let myComment = item.value["placeComments"] as! String
-                        let myAdd = item.value["address"] as! String
-                        let type = item.value["type"] as! String
-                        let urlString = item.value["image_path"] as! String
-                        let rating = item.value["starCount"] as! Double
-                        let myKey = item.value["key"] as! String
-                        let userName = item.value["userName"] as! String
-                        let myID = item.value["uid"] as! String
+                    
+                        let myName = child.value["name"] as! String
+                        let myComment = child.value["placeComments"] as! String
+                        let myAdd = child.value["address"] as! String
+                        let type = child.value["type"] as! String
+                        let urlString = child.value["image_path"] as! String
+                        let rating = child.value["starCount"] as! Double
+                        let myKey = child.value["key"] as! String
+                        let userName = child.value["userName"] as! String
+                        let myID = child.value["uid"] as! String
                         
                         let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey, user: userName, id: myID)
                         let storage = FIRStorage.storage()
@@ -131,13 +137,163 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
                             }
                         })
                         
-                    }
+                    
                     
                 }
             }
         })
     }
     
+    func fireBaseFunc2() {
+        let id = (FIRAuth.auth()?.currentUser?.uid)! as String
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/user-posts/)\(id)")
+        self.ref.queryOrderedByKey().observeEventType(.Value, withBlock: { snapshot in
+            if snapshot.exists(){
+                for child in snapshot.children{
+                    self.imageArray = [UIImage]()
+                    self.reviewedArray = [Posts]()
+                    let myName = child.value["name"] as! String
+                    let myAdd = child.value["address"] as! String
+                    let myComment = child.value["placeComments"] as! String
+                    let type = child.value["type"] as! String
+                    let urlString = child.value["image_path"] as! String
+                    let rating = child.value["starCount"] as! Double
+                    let myKey = child.value["key"] as! String
+                    let userName = child.value["userName"] as! String
+                    let myId = child.value["uid"] as! String
+                    
+                    let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey, user: userName, id: myId)
+                    let storage = FIRStorage.storage()
+                    storage.referenceForURL(urlString).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        if(error == nil){
+                            let userPhoto = UIImage(data: data!)
+                            self.imageArray.append(userPhoto!)
+                            self.reviewedArray.append(myPost)
+                            self.myTableView.reloadData()
+                            //self.myImage = userPhoto
+                            //cell.cellImage.image = userPhoto
+                            
+                        }else{
+                            print(error.debugDescription)
+                        }
+                    })
+                    
+                }
+            }
+        })
+    }
+    
+    func fireBaseFunc3(id: String) {
+        
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/user-posts/)\(id)")
+        self.ref.queryOrderedByKey().observeEventType(.Value, withBlock: { snapshot in
+            if snapshot.exists(){
+                for child in snapshot.children{
+                    self.imageArray = [UIImage]()
+                    self.reviewedArray = [Posts]()
+                    let myName = child.value["name"] as! String
+                    let myAdd = child.value["address"] as! String
+                    let myComment = child.value["placeComments"] as! String
+                    let type = child.value["type"] as! String
+                    let urlString = child.value["image_path"] as! String
+                    let rating = child.value["starCount"] as! Double
+                    let myKey = child.value["key"] as! String
+                    let userName = child.value["userName"] as! String
+                    let myId = child.value["uid"] as! String
+                    
+                    let myPost = Posts(name: myName, address: myAdd, type: type, rating: rating, url: urlString, comment: myComment, key: myKey, user: userName, id: myId)
+                    let storage = FIRStorage.storage()
+                    storage.referenceForURL(urlString).dataWithMaxSize(20*1024*1024, completion: { (data, error) in
+                        if(error == nil){
+                            let userPhoto = UIImage(data: data!)
+                            self.imageArray.append(userPhoto!)
+                            self.reviewedArray.append(myPost)
+                            self.myTableView.reloadData()
+                            //self.myImage = userPhoto
+                            //cell.cellImage.image = userPhoto
+                            
+                        }else{
+                            print(error.debugDescription)
+                        }
+                    })
+                    
+                }
+            }
+        })
+    }
+    
+    func getFollowersId() {
+        self.userArray = [Users]()
+        let id = (FIRAuth.auth()?.currentUser?.uid)! as String
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/users/" + id + "/followers")
+        self.ref.queryOrderedByValue().observeEventType(.Value, withBlock: { snapshot in
+            
+            if snapshot.exists(){
+                
+                for snap in snapshot.children{
+                    for child in snap.children{
+                        let name = child.value["Name"] as? String
+                        let id = child.value["UID"] as? String
+                        let url = child.value["URL"] as? String
+                        let users = Users()
+                        users.name = name!
+                        users.id = id!
+                        users.url = NSURL(string: url!)!
+                        self.userArray.append(users)
+                        self.myTableView.reloadData()
+                        for myObject in self.userArray{
+                            self.fireBaseFunc3(myObject.id)
+                        }
+                        
+                    }
+                    
+                }
+            }
+            
+            
+        })
+        
+    }
+    @IBAction func myAllAction(sender: UIButton) {
+        self.myAllButton.selected = true
+        self.myAllButton.backgroundColor = UIColor.orangeColor()
+        self.myAllButton.tintColor = UIColor.clearColor()
+        self.myFollowersButton.selected = false
+        self.myFollowersButton.backgroundColor = UIColor.lightGrayColor()
+        self.myFollowersButton.tintColor = UIColor.clearColor()
+        self.myReviewedButton.selected = false
+        self.myReviewedButton.backgroundColor = UIColor.lightGrayColor()
+        self.myReviewedButton.tintColor = UIColor.clearColor()
+        fireBaseFunc()
+    }
+    
+    @IBAction func myFollowersAction(sender: UIButton) {
+        self.myAllButton.selected = false
+        self.myAllButton.backgroundColor = UIColor.lightGrayColor()
+        self.myAllButton.tintColor = UIColor.clearColor()
+        self.myFollowersButton.selected = true
+        self.myFollowersButton.backgroundColor = UIColor.orangeColor()
+        self.myFollowersButton.tintColor = UIColor.clearColor()
+        self.myReviewedButton.selected = false
+        self.myReviewedButton.backgroundColor = UIColor.lightGrayColor()
+        self.myReviewedButton.tintColor = UIColor.clearColor()
+        getFollowersId()
+        
+        
+    }
+    
+    @IBAction func myReviewedAction(sender: UIButton) {
+        self.myAllButton.selected = false
+        self.myAllButton.backgroundColor = UIColor.lightGrayColor()
+        self.myAllButton.tintColor = UIColor.clearColor()
+        self.myFollowersButton.selected = false
+        self.myFollowersButton.backgroundColor = UIColor.lightGrayColor()
+        self.myFollowersButton.tintColor = UIColor.clearColor()
+        self.myReviewedButton.selected = true
+        self.myReviewedButton.backgroundColor = UIColor.orangeColor()
+        self.myReviewedButton.tintColor = UIColor.clearColor()
+        fireBaseFunc2()
+    }
     override func viewWillAppear(animated: Bool) {
         if let user = FIRAuth.auth()?.currentUser {
             
@@ -252,12 +408,23 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
         if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)) {
             let socialController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
             let buttonRow = sender.tag
-            let myText = ("I just reviewed " + self.reviewedArray[buttonRow].Name + " on the Abled App, join me and help the community")
-            socialController.setInitialText(myText)
+
+            socialController.addImage(self.imageArray[buttonRow])
             
             
-            self.presentViewController(socialController, animated: true, completion: nil)
+            self.presentViewController(socialController, animated: true, completion: {
+                if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)) {
+                    let socialController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+                    let buttonRow = sender.tag
+                    socialController.setInitialText("Posted on the Abled App")
+                    socialController.addImage(self.imageArray[buttonRow])
+                    
+                    
+                    self.presentViewController(socialController, animated: true, completion: nil)
+                }
+            })
         }
+        
     }
     
     

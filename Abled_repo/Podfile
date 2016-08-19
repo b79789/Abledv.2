@@ -1,6 +1,6 @@
 
-# platform :ios, '8.0'
-# Uncomment this line if you're using Swift
+platform :ios, '9.2'
+source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 target 'Abled' do
@@ -12,6 +12,5 @@ pod 'Firebase/Database'
 pod 'Firebase'
 pod 'Firebase/Storage'
 pod 'Firebase/Auth'
-
 
 end

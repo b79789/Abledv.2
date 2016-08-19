@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		33E9737D2CD4C1777DF9DA1F /* Pods_Abled.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCDAD3AB10544AF2E3D152A7 /* Pods_Abled.framework */; };
 		38014F4B1C5194B400B8FE17 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38014F4A1C5194B400B8FE17 /* DetailView.swift */; };
 		38014F4D1C5A728500B8FE17 /* AbledText2.png in Resources */ = {isa = PBXBuildFile; fileRef = 38014F4C1C5A728500B8FE17 /* AbledText2.png */; };
 		38014F4F1C5A784200B8FE17 /* abledHomePageText.png in Resources */ = {isa = PBXBuildFile; fileRef = 38014F4E1C5A784200B8FE17 /* abledHomePageText.png */; };
@@ -248,12 +247,8 @@
 		38B5A0541D57B1E900D734E5 /* No_Image_Available.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = No_Image_Available.png; sourceTree = "<group>"; };
 		38B5A0561D57E50400D734E5 /* Posts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
 		38E8EC4A1D3ECFC5000594D2 /* open-road.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "open-road.jpg"; sourceTree = "<group>"; };
-		3DADAA0E525D15EDFB568A7A /* Pods-Abled.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abled.release.xcconfig"; path = "Pods/Target Support Files/Pods-Abled/Pods-Abled.release.xcconfig"; sourceTree = "<group>"; };
-		44CCDB246206A92783E78538 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		58DECA5F8709648D03BAD850 /* Pods_AbledUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AbledUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7911111B7932435BF5A6FDAF /* Pods_AbledTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AbledTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1124B671E6A5E8CB4E5DF9E /* Pods-Abled.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abled.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Abled/Pods-Abled.debug.xcconfig"; sourceTree = "<group>"; };
-		FCDAD3AB10544AF2E3D152A7 /* Pods_Abled.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Abled.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		898C794407F196D7768A99AD /* Pods-Abled.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abled.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Abled/Pods-Abled.debug.xcconfig"; sourceTree = "<group>"; };
+		9BF8734D5B0DF78FF42AB14D /* Pods-Abled.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abled.release.xcconfig"; path = "Pods/Target Support Files/Pods-Abled/Pods-Abled.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,7 +269,6 @@
 				386208441C4852E90069924F /* CFNetwork.framework in Frameworks */,
 				386208581C4853490069924F /* Parse.framework in Frameworks */,
 				386208421C4852E20069924F /* AudioToolbox.framework in Frameworks */,
-				33E9737D2CD4C1777DF9DA1F /* Pods_Abled.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,8 +510,8 @@
 		A3F9FFFC486AF10D6E5B1F8D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A1124B671E6A5E8CB4E5DF9E /* Pods-Abled.debug.xcconfig */,
-				3DADAA0E525D15EDFB568A7A /* Pods-Abled.release.xcconfig */,
+				898C794407F196D7768A99AD /* Pods-Abled.debug.xcconfig */,
+				9BF8734D5B0DF78FF42AB14D /* Pods-Abled.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -525,10 +519,6 @@
 		BFFDE524C1694B93B284AAF9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				44CCDB246206A92783E78538 /* Pods.framework */,
-				FCDAD3AB10544AF2E3D152A7 /* Pods_Abled.framework */,
-				7911111B7932435BF5A6FDAF /* Pods_AbledTests.framework */,
-				58DECA5F8709648D03BAD850 /* Pods_AbledUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -940,6 +930,7 @@
 /* Begin XCBuildConfiguration section */
 		384B2E061C468BF10084AD4C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 898C794407F196D7768A99AD /* Pods-Abled.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -986,6 +977,7 @@
 		};
 		384B2E071C468BF10084AD4C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9BF8734D5B0DF78FF42AB14D /* Pods-Abled.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1025,7 +1017,7 @@
 		};
 		384B2E091C468BF10084AD4C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1124B671E6A5E8CB4E5DF9E /* Pods-Abled.debug.xcconfig */;
+			baseConfigurationReference = 898C794407F196D7768A99AD /* Pods-Abled.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1066,7 +1058,7 @@
 		};
 		384B2E0A1C468BF10084AD4C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3DADAA0E525D15EDFB568A7A /* Pods-Abled.release.xcconfig */;
+			baseConfigurationReference = 9BF8734D5B0DF78FF42AB14D /* Pods-Abled.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1074,6 +1066,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					$/Users/brianstacks/Desktop/Abledv.2/Abled_repo,
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1106,6 +1099,7 @@
 		};
 		384B2E0C1C468BF10084AD4C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 898C794407F196D7768A99AD /* Pods-Abled.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = AbledTests/Info.plist;
@@ -1118,6 +1112,7 @@
 		};
 		384B2E0D1C468BF10084AD4C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9BF8734D5B0DF78FF42AB14D /* Pods-Abled.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = AbledTests/Info.plist;
@@ -1130,6 +1125,7 @@
 		};
 		384B2E0F1C468BF10084AD4C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 898C794407F196D7768A99AD /* Pods-Abled.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = AbledUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1142,6 +1138,7 @@
 		};
 		384B2E101C468BF10084AD4C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9BF8734D5B0DF78FF42AB14D /* Pods-Abled.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = AbledUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

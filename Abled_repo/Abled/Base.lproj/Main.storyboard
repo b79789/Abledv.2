@@ -765,6 +765,9 @@
                                 <state key="normal" title="myReviewed">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="myReviewedAction:" destination="Uih-Cp-nfl" eventType="touchUpInside" id="qm0-G7-4Sa"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="00G-mw-mT4">
                                 <rect key="frame" x="188" y="55" width="202" height="44"/>
@@ -776,6 +779,9 @@
                                 <state key="normal" title="myFollowers">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="myFollowersAction:" destination="Uih-Cp-nfl" eventType="touchUpInside" id="qgO-x6-HeK"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GFj-Q6-bbq">
                                 <rect key="frame" x="390" y="55" width="210" height="44"/>
@@ -787,6 +793,9 @@
                                 <state key="normal" title="myAll">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="myAllAction:" destination="Uih-Cp-nfl" eventType="touchUpInside" id="uLa-E6-aVK"/>
+                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" alpha="0.80000000000000004" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="283" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mMD-qb-aWv">
                                 <rect key="frame" x="0.0" y="99" width="600" height="388"/>
@@ -829,9 +838,10 @@
                                                     </variation>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tHA-03-fRd">
-                                                    <rect key="frame" x="284" y="131" width="117" height="30"/>
+                                                    <rect key="frame" x="284" y="148" width="50" height="13"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="tHA-03-fRd" secondAttribute="height" multiplier="39:10" id="nej-ih-zQP"/>
+                                                        <constraint firstAttribute="width" constant="50" id="wsc-TH-xj7"/>
                                                     </constraints>
                                                     <state key="normal" title="Share">
                                                         <color key="titleColor" red="0.99215686270000003" green="0.59607843140000005" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
@@ -841,7 +851,7 @@
                                                     </connections>
                                                 </button>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Comments from user" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gAk-fI-92H">
-                                                    <rect key="frame" x="284" y="0.0" width="57" height="99"/>
+                                                    <rect key="frame" x="284" y="0.0" width="66" height="116"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="gAk-fI-92H" secondAttribute="height" multiplier="122:215" id="dJD-mO-T9X"/>
@@ -866,7 +876,7 @@
                                                     </variation>
                                                 </label>
                                                 <view userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="usB-lx-cyk" customClass="HCSStarRatingView">
-                                                    <rect key="frame" x="284" y="99" width="120" height="30"/>
+                                                    <rect key="frame" x="284" y="116" width="120" height="30"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="usB-lx-cyk" secondAttribute="height" multiplier="4:1" id="OUd-uS-caX"/>
@@ -885,6 +895,10 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aMn-fg-eay">
+                                                    <rect key="frame" x="349" y="148" width="50" height="13"/>
+                                                    <state key="normal" title="Button"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="yyV-x8-M96" firstAttribute="leading" secondItem="gAk-fI-92H" secondAttribute="leading" id="1eG-Gb-C7z"/>
@@ -894,13 +908,14 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="usB-lx-cyk" secondAttribute="trailing" constant="-6" id="94b-2Z-XZA"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="gAk-fI-92H" secondAttribute="trailing" constant="-4" id="Ael-uF-Dyn"/>
                                                 <constraint firstItem="ref-ed-BfN" firstAttribute="leading" secondItem="9eG-rc-bxI" secondAttribute="leading" constant="5" id="C9F-4r-VXC"/>
+                                                <constraint firstItem="aMn-fg-eay" firstAttribute="height" secondItem="tHA-03-fRd" secondAttribute="height" id="Cjl-Va-uEQ"/>
                                                 <constraint firstItem="usB-lx-cyk" firstAttribute="top" secondItem="gAk-fI-92H" secondAttribute="bottom" id="DLS-aC-gKS"/>
                                                 <constraint firstItem="gAk-fI-92H" firstAttribute="top" secondItem="9eG-rc-bxI" secondAttribute="top" id="E3w-RT-Nhe"/>
+                                                <constraint firstItem="aMn-fg-eay" firstAttribute="leading" secondItem="ref-ed-BfN" secondAttribute="trailing" constant="65" id="Fwx-oq-9fr"/>
                                                 <constraint firstItem="gAk-fI-92H" firstAttribute="top" secondItem="9eG-rc-bxI" secondAttribute="topMargin" constant="42" id="G4M-2B-yTq"/>
                                                 <constraint firstItem="usB-lx-cyk" firstAttribute="leading" secondItem="tHA-03-fRd" secondAttribute="leading" id="M79-xt-OfW"/>
                                                 <constraint firstItem="yyV-x8-M96" firstAttribute="leading" secondItem="9eG-rc-bxI" secondAttribute="leading" id="Mbb-A3-5Ea"/>
                                                 <constraint firstItem="tHA-03-fRd" firstAttribute="top" secondItem="usB-lx-cyk" secondAttribute="bottom" constant="2" id="P93-Ab-KD0"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="tHA-03-fRd" secondAttribute="trailing" constant="-3" id="Qb8-ZU-wbz"/>
                                                 <constraint firstItem="gAk-fI-92H" firstAttribute="leading" secondItem="QLT-hN-iy3" secondAttribute="trailing" id="S76-ze-8Lu"/>
                                                 <constraint firstItem="gAk-fI-92H" firstAttribute="leading" secondItem="QLT-hN-iy3" secondAttribute="trailing" id="STm-Y6-8rM"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="usB-lx-cyk" secondAttribute="trailing" constant="-6" id="Tei-ir-t5Q"/>
@@ -910,12 +925,13 @@
                                                 <constraint firstItem="ref-ed-BfN" firstAttribute="width" secondItem="yyV-x8-M96" secondAttribute="width" id="ayq-ce-J16"/>
                                                 <constraint firstItem="gAk-fI-92H" firstAttribute="leading" secondItem="yyV-x8-M96" secondAttribute="trailing" constant="5" id="bRY-Su-DV4"/>
                                                 <constraint firstAttribute="trailing" secondItem="gAk-fI-92H" secondAttribute="trailing" id="bvG-7g-932"/>
+                                                <constraint firstItem="aMn-fg-eay" firstAttribute="baseline" secondItem="tHA-03-fRd" secondAttribute="baseline" id="eQk-EU-C9l"/>
                                                 <constraint firstItem="usB-lx-cyk" firstAttribute="leading" secondItem="yyV-x8-M96" secondAttribute="trailing" constant="5" id="eXL-gi-ELd"/>
                                                 <constraint firstItem="ref-ed-BfN" firstAttribute="leading" secondItem="9eG-rc-bxI" secondAttribute="leading" id="emZ-LT-7X5"/>
                                                 <constraint firstAttribute="trailing" secondItem="gAk-fI-92H" secondAttribute="trailing" id="f5w-BM-TUh"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="yyV-x8-M96" secondAttribute="bottom" constant="4" id="fCL-Jg-CYg"/>
                                                 <constraint firstAttribute="trailing" secondItem="tHA-03-fRd" secondAttribute="trailing" constant="5" id="fJG-ws-qyp"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="tHA-03-fRd" secondAttribute="trailing" constant="-3" id="l9O-Cd-9jS"/>
+                                                <constraint firstItem="aMn-fg-eay" firstAttribute="width" secondItem="tHA-03-fRd" secondAttribute="width" id="i4d-bh-lta"/>
                                                 <constraint firstItem="QLT-hN-iy3" firstAttribute="width" secondItem="yyV-x8-M96" secondAttribute="width" id="mVK-Iu-daO"/>
                                                 <constraint firstItem="QLT-hN-iy3" firstAttribute="top" secondItem="9eG-rc-bxI" secondAttribute="top" id="nLd-OT-pDE"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="usB-lx-cyk" secondAttribute="trailing" constant="-6" id="ped-Wy-4MO"/>
@@ -934,6 +950,7 @@
                                                     <exclude reference="STm-Y6-8rM"/>
                                                     <exclude reference="bvG-7g-932"/>
                                                     <exclude reference="f5w-BM-TUh"/>
+                                                    <exclude reference="fJG-ws-qyp"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1023,6 +1040,9 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Home" id="Qam-Tq-4Qb"/>
                     <connections>
+                        <outlet property="myAllButton" destination="GFj-Q6-bbq" id="Xse-nY-Xai"/>
+                        <outlet property="myFollowersButton" destination="00G-mw-mT4" id="Ene-qM-etg"/>
+                        <outlet property="myReviewedButton" destination="2E8-z2-9tp" id="VGe-C8-1yf"/>
                         <outlet property="myTableView" destination="mMD-qb-aWv" id="DXT-8a-h73"/>
                         <outlet property="proPic" destination="ste-op-KBr" id="Rns-Fg-WWF"/>
                         <outlet property="userNameLabel" destination="d5b-YR-M50" id="GHl-K2-b30"/>
