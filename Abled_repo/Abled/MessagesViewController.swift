@@ -22,6 +22,7 @@ class MessagesViewController: UIViewController {
     var storageRef: FIRStorageReference!
     @IBOutlet weak var clientTable: UITableView!
     var mySentUser: Users!
+    var userArray = [Users]()
     let testArray = ["Jonny","Wilma","Dusty","Brian78","Ronald","Vickie","Nicole", "Isaiah", "Tony", "Ashlie"]
     let commentArray = ["Very easy access","Smooth","easy in easy out","Not very accessible","Hope more places are like this","Would recommend","Excellent place", "Smooth transitions", "Beautiful and easy", "Exits and entrances are good"]
     let pic1 = "man1.jpeg"
@@ -38,6 +39,7 @@ class MessagesViewController: UIViewController {
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessagesViewController.gotToSingleMessage(_:)), name:"message", object: nil)
         if (FIRAuth.auth()?.currentUser) != nil {
+            fireBaseFunc()
             self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/")
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 // check if user has photo
@@ -112,18 +114,57 @@ class MessagesViewController: UIViewController {
         
     }
     
+    
+    
+    func fireBaseFunc() {
+        let id = (FIRAuth.auth()?.currentUser?.uid)! as String
+        self.ref = FIRDatabase.database().referenceFromURL("https://abled-e36b6.firebaseio.com/users/")
+        self.ref.queryOrderedByValue().observeEventType(.Value, withBlock: { snapshot in
+            
+            if snapshot.exists(){
+                
+                for snap in snapshot.children{
+                    print(snap.description)
+                        let name = snap.value["userName"] as? String
+                        let id = snap.value["userID"] as? String
+                        let url = snap.value["userPhoto"] as? String
+                        let users = Users()
+                        users.name = name!
+                        users.id = id!
+                        users.url = NSURL(string: url!)!
+                        self.userArray.append(users)
+                        self.clientTable.reloadData()
+                        
+                        
+                    
+                    
+                }
+            }
+            
+            
+        })
+        
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return testArray.count
+        return userArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("MessagesTableViewCell") as! MessagesTableViewCell
-        let thumbils:[String] = [ pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9,pic10]
-        cell.profilersImage?.image = UIImage(named: thumbils[indexPath.row])
+        cell.messageText?.text = userArray[indexPath.item].id
+        cell.profilersName?.text = userArray[indexPath.item].name
+        let url =  userArray[indexPath.row].url
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            let data = NSData(contentsOfURL: url) //make sure your image in this url does exist, otherwise unwrap in a if let check
+            dispatch_async(dispatch_get_main_queue(), {
+                cell.profilersImage.image = UIImage(data: data!)
+            });
+        }
         //cell.myUserName?.text = testArray[indexPath.item]
-        cell.messageText?.text = commentArray[indexPath.item]
-        cell.profilersName?.text = testArray[indexPath.item]
+        
         //cell.myUserName?.text = testArray[indexPath.item]
         //cell.textLabel?.text = testArray[indexPath.item]
         //cell.imageView?.image = UIImage(named: thumbils[indexPath.row])
@@ -138,7 +179,7 @@ class MessagesViewController: UIViewController {
         let row = indexPath.row
         print("Row: \(row)")
         
-        print(testArray[row] )
+        print(userArray[row] )
         
         //let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("EnterData");
         //self.navigationController!.pushViewController(viewController, animated: true)

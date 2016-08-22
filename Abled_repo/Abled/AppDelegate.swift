@@ -10,7 +10,7 @@ import Bolts
 import UIKit
 import Firebase
 import FirebaseDatabase
-
+import GooglePlaces
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        GMSPlacesClient.provideAPIKey("AIzaSyDY3zfNjpeqTY1jJYxZtWN_yNC39ZRRH9U")
         FIRApp.configure()
         locationManager = CLLocationManager()
         locationManager?.requestWhenInUseAuthorization()

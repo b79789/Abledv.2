@@ -1,6 +1,0 @@
-framework module Pods_Abled {
-  umbrella header "Pods-Abled-umbrella.h"
-
-  export *
-  module * { export * }
-}

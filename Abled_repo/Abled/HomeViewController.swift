@@ -412,17 +412,7 @@ class HomeViewController: UIViewController , UIPopoverPresentationControllerDele
             socialController.addImage(self.imageArray[buttonRow])
             
             
-            self.presentViewController(socialController, animated: true, completion: {
-                if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)) {
-                    let socialController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                    let buttonRow = sender.tag
-                    socialController.setInitialText("Posted on the Abled App")
-                    socialController.addImage(self.imageArray[buttonRow])
-                    
-                    
-                    self.presentViewController(socialController, animated: true, completion: nil)
-                }
-            })
+            self.presentViewController(socialController, animated: true, completion: nil)
         }
         
     }
